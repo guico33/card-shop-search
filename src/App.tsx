@@ -54,7 +54,7 @@ function App() {
             Generate links
           </Button>
           <TextareaAutosize
-            style={{ width: '360px', height: '70vh', fontSize: '18px' }}
+            style={{ maxWidth: '300px', height: '500px', fontSize: '18px' }}
             onChange={handleChangeCardList}
             value={cardListText}
           />
