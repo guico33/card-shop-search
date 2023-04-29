@@ -39,7 +39,7 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
       onChange={(_event, newValue) => {
         setSelectedCard(newValue)
       }}
-      noOptionsText="No card found"
+      noOptionsText={inputValue ? 'No card found' : ''}
       onInputChange={(_event, newInputValue) => {
         setInputValue(newInputValue)
       }}

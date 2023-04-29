@@ -1,24 +1,14 @@
+import { Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { Website } from './types'
-import { generateLinks } from './utils'
-import { websites } from './constants'
+import LinksList from './LinksList'
+import LinksTable from './LinksTable'
 import SearchCardInput from './SearchCardInput'
-import {
-  Button,
-  Container,
-  Link,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextareaAutosize,
-} from '@mui/material'
 import { SearchCardResponse } from './api'
+import { Website } from './types'
+import { generateLinks, useBreakpoints } from './utils'
 
 function App() {
+  const { isLgUp } = useBreakpoints()
   const [cardListText, setCardListText] = useState('')
   const [selectedCard, setSelectedCard] = useState<SearchCardResponse['data'][number] | null>(null)
 
@@ -51,9 +41,9 @@ function App() {
 
   return (
     <Container sx={{ mt: 2 }} maxWidth="xl">
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
+      <Stack direction={{ xs: 'column', lg: 'row' }} spacing={4}>
         <Stack spacing={3}>
-          <label>Cards list</label>
+          <Typography variant="h4">Cards list</Typography>
           <Stack direction="row" spacing={2}>
             <SearchCardInput selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
             <Button onClick={handleAddCard} disabled={!selectedCardName} size="small">
@@ -69,38 +59,10 @@ function App() {
             value={cardListText}
           />
         </Stack>
-        <TableContainer>
-          <label>Links</label>
-          {/* Table to display the links */}
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Card Name</TableCell>
-                {websites.map((website) => {
-                  return <TableCell key={website}>{website}</TableCell>
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {links.map((link) => {
-                return (
-                  <TableRow key={link.cardName}>
-                    <TableCell>{link.cardName}</TableCell>
-                    {websites.map((website) => {
-                      return (
-                        <TableCell key={website}>
-                          <Link href={link.links[website]} target="_blank" rel="noreferrer">
-                            Open
-                          </Link>
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Stack spacing={3}>
+          <Typography variant="h4">Links</Typography>
+          {isLgUp ? <LinksTable links={links} /> : <LinksList links={links} />}
+        </Stack>
       </Stack>
     </Container>
   )
