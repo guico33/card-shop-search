@@ -40,7 +40,7 @@ function App() {
   }
 
   return (
-    <Container sx={{ mt: 2 }} maxWidth="xl">
+    <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
       <Stack direction={{ xs: 'column', lg: 'row' }} spacing={4}>
         <Stack spacing={3}>
           <Typography variant="h4">Cards list</Typography>
