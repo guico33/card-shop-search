@@ -1,5 +1,5 @@
 import { Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LinksList from './LinksList'
 import LinksTable from './LinksTable'
 import SearchCardInput from './SearchCardInput'
@@ -30,9 +30,14 @@ function App() {
   const handleGenerateLinks = () => {
     const links = generateLinks(cardListText.trim())
     setLinks(links)
-    // scroll to links
-    LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    if (links.length) {
+      // scroll to links
+      LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [links.length])
 
   const handleAddCard = () => {
     setCardListText((prev) => {
