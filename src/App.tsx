@@ -11,6 +11,7 @@ function App() {
   const { isLgUp } = useBreakpoints()
   const [cardListText, setCardListText] = useState('')
   const [selectedCard, setSelectedCard] = useState<SearchCardResponse['data'][number] | null>(null)
+  const LinksContainerRef = React.useRef<HTMLDivElement>(null)
 
   const selectedCardName = selectedCard?.name
 
@@ -26,9 +27,11 @@ function App() {
     setCardListText(cardList)
   }
 
-  const handleOpenTabs = () => {
+  const handleGenerateLinks = () => {
     const links = generateLinks(cardListText.trim())
     setLinks(links)
+    // scroll to links
+    LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const handleAddCard = () => {
@@ -50,7 +53,11 @@ function App() {
               Add
             </Button>
           </Stack>
-          <Button onClick={handleOpenTabs} disabled={!cardListText} sx={{ width: 'fit-content' }}>
+          <Button
+            onClick={handleGenerateLinks}
+            disabled={!cardListText}
+            sx={{ width: 'fit-content' }}
+          >
             Generate links
           </Button>
           <TextareaAutosize
@@ -59,7 +66,7 @@ function App() {
             value={cardListText}
           />
         </Stack>
-        <Stack spacing={3}>
+        <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
           {isLgUp ? <LinksTable links={links} /> : <LinksList links={links} />}
         </Stack>
