@@ -9,7 +9,7 @@ type LinksListProps = {
 }
 
 export const LinksList = ({ links }: LinksListProps) => (
-  <Stack>
+  <Stack spacing={2}>
     {links.map((link) => {
       return (
         <Stack key={link.cardName} sx={{ border: '1px solid white', p: 2, width: 'fit-content' }}>
