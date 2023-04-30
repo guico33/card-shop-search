@@ -1,4 +1,4 @@
-import { Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material'
+import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import LinksList from './LinksList'
 import LinksTable from './LinksTable'
@@ -32,20 +32,30 @@ function App() {
     setLinks(links)
   }
 
+  const handleAddCard = () => {
+    const cardName = `1x ${selectedCardName}`
+    const updatedCardListText = !cardListText
+      ? cardName
+      : cardListText.includes(cardName)
+      ? cardListText
+      : `${cardListText}\n${cardName}`
+    setCardListText(updatedCardListText)
+    setSelectedCard(null)
+    return updatedCardListText
+  }
+
+  const handleSearchNow = () => {
+    const updatedCardListText = handleAddCard()
+    const links = generateLinks(updatedCardListText.trim())
+    setLinks(links)
+  }
+
   useEffect(() => {
     if (links.length) {
       // scroll to links
       LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [links.length])
-
-  const handleAddCard = () => {
-    setCardListText((prev) => {
-      const cardName = `1x ${selectedCardName}`
-      return !prev ? cardName : prev.includes(cardName) ? prev : `${prev}\n${cardName}`
-    })
-    setSelectedCard(null)
-  }
 
   return (
     <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
@@ -58,13 +68,18 @@ function App() {
               Add
             </Button>
           </Stack>
-          <Button
-            onClick={handleGenerateLinks}
-            disabled={!cardListText}
-            sx={{ width: 'fit-content' }}
-          >
-            Generate links
-          </Button>
+          <Box display="flex" gap={2}>
+            <Button
+              onClick={handleGenerateLinks}
+              disabled={!cardListText}
+              sx={{ width: 'fit-content' }}
+            >
+              Generate links
+            </Button>
+            <Button disabled={!selectedCardName} onClick={handleSearchNow}>
+              Search Now
+            </Button>
+          </Box>
           <TextareaAutosize
             style={{ maxWidth: '300px', height: '500px', fontSize: '18px' }}
             onChange={handleChangeCardList}
