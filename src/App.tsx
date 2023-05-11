@@ -60,6 +60,11 @@ function App() {
     setLinks(links)
   }
 
+  const handleClear = () => {
+    setCardListText('')
+    setLinks([])
+  }
+
   useEffect(() => {
     if (links.length) {
       // scroll to links
@@ -88,6 +93,9 @@ function App() {
             </Button>
             <Button disabled={!selectedCardName} onClick={handleSearchNow}>
               Search Now
+            </Button>
+            <Button onClick={handleClear} disabled={!cardListText && links.length === 0}>
+              Clear
             </Button>
           </Box>
           <TextareaAutosize
