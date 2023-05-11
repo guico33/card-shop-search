@@ -3,17 +3,19 @@ import { websiteToUrl, websites } from './constants'
 import { Website } from './types'
 import { useMediaQuery, useTheme } from '@mui/material'
 
+const cardNameParsingRegex = /(\d)*x*(\s)*(?<cardName>.+)/
+
 export const generateLinks = (
   cardList: string,
 ): {
   cardName: string
   links: Record<Website, string>
 }[] => {
-  const cardListArray = cardList.split('\n')
+  const cardListArray = cardList.split('\n').filter((card) => card.trim() !== '')
 
   return cardListArray.map((card) => {
     // get what's after the first space
-    let cardName = card.split(' ').slice(1).join(' ')
+    let cardName = card.match(cardNameParsingRegex)?.groups?.cardName.trim() ?? ''
     // get what's before the first (character)
     cardName = cardName.split('(')[0].trim()
     return {

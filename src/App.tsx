@@ -44,6 +44,16 @@ function App() {
     return updatedCardListText
   }
 
+  const handleRemoveCard = (cardName: string) => {
+    const updatedCardListText = cardListText
+      .split('\n')
+      .filter((card) => !card.includes(cardName))
+      .join('\n')
+    setCardListText(updatedCardListText)
+    const updatedLinks = links.filter((link) => link.cardName !== cardName)
+    setLinks(updatedLinks)
+  }
+
   const handleSearchNow = () => {
     const updatedCardListText = handleAddCard()
     const links = generateLinks(updatedCardListText.trim())
@@ -88,7 +98,11 @@ function App() {
         </Stack>
         <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
-          {isLgUp ? <LinksTable links={links} /> : <LinksList links={links} />}
+          {isLgUp ? (
+            <LinksTable links={links} />
+          ) : (
+            <LinksList links={links} onRemoveCard={handleRemoveCard} />
+          )}
         </Stack>
       </Stack>
     </Container>
