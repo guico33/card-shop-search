@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useQuery } from 'react-query'
+import { uniqBy } from 'lodash'
 
 // create new axios instance with base url https://api.scryfall.com
 const scryfallApi = axios.create({
@@ -92,16 +93,39 @@ export type SearchCardResponse = {
   }[]
 }
 
-const searchCards = async (query: string) => {
-  const response = await scryfallApi.get<SearchCardResponse>(`/cards/search?q=${query}`)
-  return response.data
+const searchCardList = async (query: string) => {
+  try {
+    const response = await scryfallApi.get<SearchCardResponse>(`/cards/search?q=${query}`)
+    return response.data.data
+  } catch {
+    return []
+  }
 }
 
-// useSearchCard hook using react-query, use lodash debounce to prevent too many api calls
+const searchCardName = async (query: string) => {
+  const response = await scryfallApi
+    .get<SearchCardResponse['data'][number]>(`/cards/named?fuzzy=${query}`)
+    .catch(() => null)
+  return response?.data
+}
+
+const searchCardsCombined = async (query: string) => {
+  const [listResponse, namedResponse] = await Promise.all([
+    searchCardList(query),
+    searchCardName(query),
+  ])
+  const combinedResponse = uniqBy(
+    [...listResponse, namedResponse].filter(Boolean),
+    'name',
+  ) as SearchCardResponse['data']
+
+  return combinedResponse
+}
+
 export const useSearchCards = (query: string) => {
   return useQuery({
     queryKey: ['searchCards', query],
-    queryFn: () => searchCards(query),
+    queryFn: () => searchCardsCombined(query),
     enabled: !!query,
     keepPreviousData: true,
   })

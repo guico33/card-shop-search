@@ -1,4 +1,4 @@
-import { Website } from "./types"
+import { Website } from './types'
 
 export const websites = [
   'Hareruya',
@@ -7,6 +7,7 @@ export const websites = [
   'Flagship Games',
   'Hideout',
   'Mox & Lotus',
+  'Agora Hobby',
 ] as const
 
 export const websiteToUrl: Record<Website, string> = {
@@ -16,4 +17,5 @@ export const websiteToUrl: Record<Website, string> = {
   'Flagship Games': 'https://www.flagshipgames.sg/search',
   Hideout: 'https://www.hideout-online.com/search',
   'Mox & Lotus': 'https://moxandlotus.sg/products',
+  'Agora Hobby': 'https://agorahobby.com/store/search',
 }

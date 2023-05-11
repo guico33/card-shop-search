@@ -28,9 +28,9 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
   return (
     <Autocomplete
       sx={{ width: 300 }}
-      getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+      getOptionLabel={(option) => option?.name}
       filterOptions={(x) => x}
-      options={data?.data || []}
+      options={data || []}
       autoComplete
       includeInputInList
       filterSelectedOptions

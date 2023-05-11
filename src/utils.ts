@@ -43,6 +43,11 @@ export const generateLinks = (
             params = new URLSearchParams({
               title: cardName.replaceAll(' ', '+'),
             })
+          } else if (website === 'Agora Hobby') {
+            params = new URLSearchParams({
+              category: 'mtg',
+              searchfield: cardName.replaceAll(' ', '+'),
+            })
           } else {
             params = new URLSearchParams({
               q: cardName.replaceAll(' ', '+'),
