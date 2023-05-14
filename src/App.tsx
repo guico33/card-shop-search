@@ -58,16 +58,18 @@ function App() {
   }
 
   const handleClear = () => {
-    setCardListText('')
-    setLinks([])
+    if (confirm('Are you sure you want to clear the cards list?')) {
+      setCardListText('')
+      setLinks([])
+    }
   }
 
-  useEffect(() => {
-    if (links.length) {
-      // scroll to links
-      LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [links.length])
+  // useEffect(() => {
+  //   if (links.length) {
+  //     // scroll to links
+  //     LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
+  //   }
+  // }, [links.length])
 
   return (
     <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
@@ -76,17 +78,10 @@ function App() {
           <Typography variant="h4">Cards list</Typography>
           <Stack direction="row" spacing={2}>
             <SearchCardInput selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
+          </Stack>
+          <Box display="flex" gap={2} justifyContent={'space-between'}>
             <Button onClick={handleAddCard} disabled={!selectedCard} size="small">
               Add
-            </Button>
-          </Stack>
-          <Box display="flex" gap={2}>
-            <Button
-              onClick={handleGenerateLinks}
-              disabled={!cardListText}
-              sx={{ width: 'fit-content' }}
-            >
-              Generate links
             </Button>
             <Button disabled={!selectedCard} onClick={handleSearchNow}>
               Search Now
@@ -100,6 +95,13 @@ function App() {
             onChange={handleChangeCardList}
             value={cardListText}
           />
+          <Button
+            onClick={handleGenerateLinks}
+            disabled={!cardListText}
+            sx={{ width: 'fit-content' }}
+          >
+            Generate links
+          </Button>
         </Stack>
         <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
