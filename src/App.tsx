@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import LinksList from './LinksList'
 import LinksTable from './LinksTable'
 import SearchCardInput from './SearchCardInput'
