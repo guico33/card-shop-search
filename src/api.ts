@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { uniqBy } from 'lodash'
+import { uniq, uniqBy } from 'lodash'
 
 // create new axios instance with base url https://api.scryfall.com
 const scryfallApi = axios.create({
@@ -93,31 +93,37 @@ export type SearchCardResponse = {
   }[]
 }
 
-const searchCardList = async (query: string) => {
+const searchCardList = async (query: string): Promise<string[]> => {
   try {
     const response = await scryfallApi.get<SearchCardResponse>(`/cards/search?q=${query}`)
-    return response.data.data
+    return response.data.data.map((card) => card.name)
   } catch {
     return []
   }
 }
 
-const searchCardName = async (query: string) => {
+const searchCardName = async (query: string): Promise<string | null | undefined> => {
   const response = await scryfallApi
     .get<SearchCardResponse['data'][number]>(`/cards/named?fuzzy=${query}`)
     .catch(() => null)
-  return response?.data
+  return response?.data?.name
 }
 
-const searchCardsCombined = async (query: string) => {
-  const [listResponse, namedResponse] = await Promise.all([
+const searchCardAutocompleted = async (query: string) => {
+  const response = await scryfallApi.get<{ data: string[] }>(`/cards/autocomplete?q=${query}`)
+  return response.data.data
+}
+
+const searchCardsCombined = async (query: string): Promise<string[]> => {
+  const [listResponse, namedResponse, autocompleteResponse] = await Promise.all([
     searchCardList(query),
     searchCardName(query),
+    searchCardAutocompleted(query),
   ])
   const combinedResponse = uniqBy(
-    [...listResponse, namedResponse].filter(Boolean),
-    'name',
-  ) as SearchCardResponse['data']
+    [...listResponse, namedResponse, ...autocompleteResponse].filter(Boolean) as string[],
+    (name) => name.trim().toLowerCase(),
+  )
 
   return combinedResponse
 }

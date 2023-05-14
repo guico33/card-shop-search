@@ -1,13 +1,13 @@
-import { useEffect } from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import * as React from 'react'
-import { SearchCardResponse, useSearchCards } from './api'
+import { useEffect } from 'react'
+import { useSearchCards } from './api'
 import { useDebounce } from './utils'
 
 type SearchCardInputProps = {
-  selectedCard: SearchCardResponse['data'][number] | null
-  setSelectedCard: React.Dispatch<React.SetStateAction<SearchCardResponse['data'][number] | null>>
+  selectedCard: string | null
+  setSelectedCard: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps) => {
@@ -15,7 +15,7 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
 
   useEffect(() => {
     if (selectedCard) {
-      setInputValue(selectedCard.name)
+      setInputValue(selectedCard)
     } else {
       setInputValue('')
     }
@@ -28,16 +28,16 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
   return (
     <Autocomplete
       sx={{ width: 300 }}
-      getOptionLabel={(option) => option?.name}
+      getOptionLabel={(option) => option}
       filterOptions={(x) => x}
       options={data || []}
       autoComplete
       includeInputInList
       filterSelectedOptions
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) => option === value}
       value={selectedCard}
       onChange={(_event, newValue) => {
-        setSelectedCard(newValue)
+        setSelectedCard(newValue as string)
       }}
       noOptionsText={inputValue ? 'No card found' : ''}
       onInputChange={(_event, newInputValue) => {
@@ -45,7 +45,7 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
       }}
       renderInput={(params) => <TextField {...params} label="Search a card" fullWidth />}
       renderOption={(props, option) => {
-        return <li {...props}>{option.name}</li>
+        return <li {...props}>{option}</li>
       }}
     />
   )

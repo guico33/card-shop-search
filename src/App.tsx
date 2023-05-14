@@ -3,17 +3,14 @@ import React, { useState, useEffect } from 'react'
 import LinksList from './LinksList'
 import LinksTable from './LinksTable'
 import SearchCardInput from './SearchCardInput'
-import { SearchCardResponse } from './api'
 import { Website } from './types'
 import { generateLinks, useBreakpoints } from './utils'
 
 function App() {
   const { isLgUp } = useBreakpoints()
   const [cardListText, setCardListText] = useState('')
-  const [selectedCard, setSelectedCard] = useState<SearchCardResponse['data'][number] | null>(null)
+  const [selectedCard, setSelectedCard] = useState<string | null>(null)
   const LinksContainerRef = React.useRef<HTMLDivElement>(null)
-
-  const selectedCardName = selectedCard?.name
 
   const [links, setLinks] = useState<
     {
@@ -33,7 +30,7 @@ function App() {
   }
 
   const handleAddCard = () => {
-    const cardName = `1x ${selectedCardName}`
+    const cardName = `1x ${selectedCard}`
     const updatedCardListText = !cardListText
       ? cardName
       : cardListText.includes(cardName)
@@ -79,7 +76,7 @@ function App() {
           <Typography variant="h4">Cards list</Typography>
           <Stack direction="row" spacing={2}>
             <SearchCardInput selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
-            <Button onClick={handleAddCard} disabled={!selectedCardName} size="small">
+            <Button onClick={handleAddCard} disabled={!selectedCard} size="small">
               Add
             </Button>
           </Stack>
@@ -91,7 +88,7 @@ function App() {
             >
               Generate links
             </Button>
-            <Button disabled={!selectedCardName} onClick={handleSearchNow}>
+            <Button disabled={!selectedCard} onClick={handleSearchNow}>
               Search Now
             </Button>
             <Button onClick={handleClear} disabled={!cardListText && links.length === 0}>
