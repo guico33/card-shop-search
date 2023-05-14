@@ -37,7 +37,7 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
               <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <DisabledByDefaultIcon
                   role="button"
-                  sx={{ ml: 'auto', cursor: 'pointer' }}
+                  sx={{ mr: 'auto', cursor: 'pointer' }}
                   onClick={() => {
                     onRemoveCard(link.cardName)
                   }}
