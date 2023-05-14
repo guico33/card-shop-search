@@ -64,13 +64,6 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   if (links.length) {
-  //     // scroll to links
-  //     LinksContainerRef.current?.scrollIntoView({ behavior: 'smooth' })
-  //   }
-  // }, [links.length])
-
   return (
     <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
       <Stack direction={{ xs: 'column', lg: 'row' }} spacing={4}>
@@ -106,7 +99,7 @@ function App() {
         <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
           {isLgUp ? (
-            <LinksTable links={links} />
+            <LinksTable links={links} onRemoveCard={handleRemoveCard} />
           ) : (
             <LinksList links={links} onRemoveCard={handleRemoveCard} />
           )}

@@ -9,15 +9,17 @@ import {
 } from '@mui/material'
 import { websites } from './constants'
 import { Website } from './types'
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
 
 type LinksTableProps = {
   links: {
     cardName: string
     links: Record<Website, string>
   }[]
+  onRemoveCard: (cardName: string) => void
 }
 
-export const LinksTable = ({ links }: LinksTableProps) => (
+export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
   <TableContainer>
     <Table>
       <TableHead>
@@ -32,7 +34,16 @@ export const LinksTable = ({ links }: LinksTableProps) => (
         {links.map((link) => {
           return (
             <TableRow key={link.cardName}>
-              <TableCell>{link.cardName}</TableCell>
+              <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <DisabledByDefaultIcon
+                  role="button"
+                  sx={{ ml: 'auto', cursor: 'pointer' }}
+                  onClick={() => {
+                    onRemoveCard(link.cardName)
+                  }}
+                />
+                {link.cardName}
+              </TableCell>
               {websites.map((website) => {
                 return (
                   <TableCell key={website}>
