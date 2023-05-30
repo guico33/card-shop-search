@@ -4,11 +4,11 @@ import LinksList from './LinksList'
 import LinksTable from './LinksTable'
 import SearchCardInput from './SearchCardInput'
 import { Website } from './types'
-import { generateLinks, useBreakpoints } from './utils'
+import { generateLinks, useBreakpoints, useLocalStorage } from './utils'
 
 function App() {
   const { isLgUp } = useBreakpoints()
-  const [cardListText, setCardListText] = useState('')
+  const [cardListText, setCardListText] = useLocalStorage<string>('cardListText', '')
   const [selectedCard, setSelectedCard] = useState<string | null>(null)
   const LinksContainerRef = React.useRef<HTMLDivElement>(null)
 
