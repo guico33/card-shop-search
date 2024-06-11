@@ -1,14 +1,14 @@
-import { Box, Link, Stack, Typography } from '@mui/material'
-import { Website } from './types'
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
+import { Box, Link, Stack, Typography } from '@mui/material';
+import { Website } from './types';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 
 type LinksListProps = {
   links: {
-    cardName: string
-    links: Record<Website, string>
-  }[]
-  onRemoveCard: (cardName: string) => void
-}
+    cardName: string;
+    links: Record<Website, string>;
+  }[];
+  onRemoveCard: (cardName: string) => void;
+};
 
 export const LinksList = ({ links, onRemoveCard }: LinksListProps) => (
   <Stack spacing={2}>
@@ -23,7 +23,7 @@ export const LinksList = ({ links, onRemoveCard }: LinksListProps) => (
               role="button"
               sx={{ ml: 'auto', cursor: 'pointer' }}
               onClick={() => {
-                onRemoveCard(link.cardName)
+                onRemoveCard(link.cardName);
               }}
             />
           </Box>
@@ -34,13 +34,13 @@ export const LinksList = ({ links, onRemoveCard }: LinksListProps) => (
                 <Link key={website} href={link} target="_blank" rel="noreferrer">
                   {website}
                 </Link>
-              )
+              );
             })}
           </Box>
         </Stack>
-      )
+      );
     })}
   </Stack>
-)
+);
 
-export default LinksList
+export default LinksList;

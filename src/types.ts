@@ -1,3 +1,3 @@
-import { websites } from './constants'
+import { websites } from './constants';
 
-export type Website = (typeof websites)[number]
+export type Website = (typeof websites)[number];
