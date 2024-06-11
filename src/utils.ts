@@ -43,7 +43,7 @@ export const generateLinks = (
             });
           } else if (website === 'Mox & Lotus') {
             params = new URLSearchParams({
-              title: cardName.replaceAll(' ', '+'),
+              title: cardName.split('//')[0].replaceAll(' ', '+'),
             });
           } else if (website === 'Agora Hobby') {
             params = new URLSearchParams({

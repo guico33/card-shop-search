@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LinksList from './LinksList';
 import LinksTable from './LinksTable';
 import SearchCardInput from './SearchCardInput';
@@ -11,6 +11,12 @@ function App() {
   const [cardListText, setCardListText] = useLocalStorage<string>('cardListText', '');
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const LinksContainerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const links = generateLinks(cardListText.trim());
+    setLinks(links);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [links, setLinks] = useState<
     {

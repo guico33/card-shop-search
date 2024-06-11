@@ -6,6 +6,7 @@ import {
   TableCell,
   TableBody,
   Link,
+  Typography,
 } from '@mui/material';
 import { websites } from './constants';
 import { Website } from './types';
@@ -29,6 +30,7 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
             return (
               <TableCell
                 key={website}
+                sx={{ cursor: 'pointer' }}
                 onClick={() => {
                   links.forEach((link) => {
                     window.open(link.links[website], '_blank');
@@ -45,15 +47,21 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
         {links.map((link) => {
           return (
             <TableRow key={link.cardName}>
-              <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <TableCell
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
                 <DisabledByDefaultIcon
                   role="button"
-                  sx={{ mr: 'auto', cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer' }}
                   onClick={() => {
                     onRemoveCard(link.cardName);
                   }}
                 />
-                {link.cardName}
+                <Typography>{link.cardName}</Typography>
               </TableCell>
               {websites.map((website) => {
                 return (

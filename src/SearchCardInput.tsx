@@ -21,7 +21,7 @@ const SearchCardInput = ({ selectedCard, setSelectedCard }: SearchCardInputProps
     }
   }, [selectedCard]);
 
-  const debouncedInputValue = useDebounce(inputValue, 100);
+  const debouncedInputValue = useDebounce(inputValue, 200);
 
   const { data } = useSearchCards(debouncedInputValue);
 
