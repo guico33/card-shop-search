@@ -1,4 +1,4 @@
-import { Website } from './types'
+import { Website } from './types';
 
 export const websites = [
   'Hareruya',
@@ -8,7 +8,8 @@ export const websites = [
   'Hideout',
   'Mox & Lotus',
   'Agora Hobby',
-] as const
+  'Grey Ogre',
+] as const;
 
 export const websiteToUrl: Record<Website, string> = {
   Hareruya: 'https://www.hareruyamtg.com/en/products/search',
@@ -18,4 +19,5 @@ export const websiteToUrl: Record<Website, string> = {
   Hideout: 'https://www.hideout-online.com/search',
   'Mox & Lotus': 'https://moxandlotus.sg/products',
   'Agora Hobby': 'https://agorahobby.com/store/search',
-}
+  'Grey Ogre': 'https://www.greyogregames.com/search',
+};

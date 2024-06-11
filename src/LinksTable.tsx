@@ -6,18 +6,18 @@ import {
   TableCell,
   TableBody,
   Link,
-} from '@mui/material'
-import { websites } from './constants'
-import { Website } from './types'
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
+} from '@mui/material';
+import { websites } from './constants';
+import { Website } from './types';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 
 type LinksTableProps = {
   links: {
-    cardName: string
-    links: Record<Website, string>
-  }[]
-  onRemoveCard: (cardName: string) => void
-}
+    cardName: string;
+    links: Record<Website, string>;
+  }[];
+  onRemoveCard: (cardName: string) => void;
+};
 
 export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
   <TableContainer>
@@ -26,7 +26,18 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
         <TableRow>
           <TableCell>Card Name</TableCell>
           {websites.map((website) => {
-            return <TableCell key={website}>{website}</TableCell>
+            return (
+              <TableCell
+                key={website}
+                onClick={() => {
+                  links.forEach((link) => {
+                    window.open(link.links[website], '_blank');
+                  });
+                }}
+              >
+                {website}
+              </TableCell>
+            );
           })}
         </TableRow>
       </TableHead>
@@ -39,7 +50,7 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
                   role="button"
                   sx={{ mr: 'auto', cursor: 'pointer' }}
                   onClick={() => {
-                    onRemoveCard(link.cardName)
+                    onRemoveCard(link.cardName);
                   }}
                 />
                 {link.cardName}
@@ -51,14 +62,14 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
                       Open
                     </Link>
                   </TableCell>
-                )
+                );
               })}
             </TableRow>
-          )
+          );
         })}
       </TableBody>
     </Table>
   </TableContainer>
-)
+);
 
-export default LinksTable
+export default LinksTable;
