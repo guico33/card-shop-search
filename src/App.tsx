@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import LinksList from './LinksList';
 import LinksTable from './LinksTable';
 import SearchCardInput from './SearchCardInput';
@@ -16,17 +16,22 @@ function App() {
 
   const [links, setLinks] = useLocalStorage<CardData[]>('cardLinks', []);
 
-  const handleChangeCardList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const cardList = e.target.value;
-    setCardListText(cardList);
-  };
+  const handleChangeCardList = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const cardList = e.target.value;
+      setCardListText(cardList);
+    },
+    [setCardListText],
+  );
 
-  const handleGenerateLinks = () => {
-    const updatedLinks = generateLinks(cardListText.trim(), links);
-    setLinks(updatedLinks);
-  };
+  const handleGenerateLinks = useCallback(() => {
+    setLinks((prevLinks) => {
+      const updatedLinks = generateLinks(cardListText.trim(), prevLinks);
+      return updatedLinks;
+    });
+  }, [cardListText, setLinks]);
 
-  const handleAddCard = () => {
+  const handleAddCard = useCallback(() => {
     const cardName = `1x ${selectedCard}`;
     const updatedCardListText = !cardListText
       ? cardName
@@ -36,43 +41,55 @@ function App() {
     setCardListText(updatedCardListText);
     setSelectedCard(null);
     return updatedCardListText;
-  };
+  }, [cardListText, selectedCard, setCardListText]);
 
-  const handleRemoveCard = (cardName: string) => {
-    const updatedCardListText = cardListText
-      .split('\n')
-      .filter((card) => !card.includes(cardName))
-      .join('\n');
-    setCardListText(updatedCardListText);
-    const updatedLinks = links.filter((link) => link.cardName !== cardName);
-    setLinks(updatedLinks);
-  };
+  const handleRemoveCard = useCallback(
+    (cardName: string) => {
+      setLinks((prevLinks) => {
+        const updatedCardListText = cardListText
+          .split('\n')
+          .filter((card) => !card.includes(cardName))
+          .join('\n');
+        setCardListText(updatedCardListText);
+        const updatedLinks = prevLinks.filter((link) => link.cardName !== cardName);
+        return updatedLinks;
+      });
+    },
+    [cardListText, setCardListText, setLinks],
+  );
 
-  const handleToggleCheckCard = (cardName: string) => {
-    const updatedLinks = links.map((link) => {
-      if (link.cardName === cardName) {
-        return {
-          ...link,
-          checked: !link.checked,
-        };
-      }
-      return link;
-    });
-    setLinks(updatedLinks);
-  };
+  const handleToggleCheckCard = useCallback(
+    (cardName: string) => {
+      setLinks((prevLinks) => {
+        const updatedLinks = prevLinks.map((link) => {
+          if (link.cardName === cardName) {
+            return {
+              ...link,
+              checked: !link.checked,
+            };
+          }
+          return link;
+        });
+        return updatedLinks;
+      });
+    },
+    [setLinks],
+  );
 
-  const handleSearchNow = () => {
+  const handleSearchNow = useCallback(() => {
     const updatedCardListText = handleAddCard();
-    const updatedLinks = generateLinks(updatedCardListText.trim(), links);
-    setLinks(updatedLinks);
-  };
+    setLinks((prevLinks) => {
+      const updatedLinks = generateLinks(updatedCardListText.trim(), prevLinks);
+      return updatedLinks;
+    });
+  }, [handleAddCard, setLinks]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     if (confirm('Are you sure you want to clear the cards list?')) {
       setCardListText('');
       setLinks([]);
     }
-  };
+  }, [setCardListText, setLinks]);
 
   return (
     <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">

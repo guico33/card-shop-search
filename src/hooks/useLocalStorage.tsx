@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useDebounce from './useDebounce';
 
 const useLocalStorage = <T,>(key: string, initialValue: T) => {
   // State to store our value
@@ -22,13 +23,18 @@ const useLocalStorage = <T,>(key: string, initialValue: T) => {
     // Allow value to be a function so we have same API as useState
     const valueToStore = value instanceof Function ? value(storedValue) : value;
     setStoredValue(valueToStore);
-    // persist to local storage
+  };
+
+  // debounce the saving to local storage
+  const debouncedValue = useDebounce(storedValue, 1000);
+
+  useEffect(() => {
     try {
-      localStorage.setItem(key, JSON.stringify(valueToStore));
+      window.localStorage.setItem(key, JSON.stringify(debouncedValue));
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [debouncedValue, key]);
 
   return [storedValue, setValue] as const;
 };
