@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { uniqBy } from 'lodash';
 
-// create new axios instance with base url https://api.scryfall.com
 const scryfallApi = axios.create({
   baseURL: 'https://api.scryfall.com',
 });

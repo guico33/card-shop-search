@@ -1,5 +1,5 @@
 import { Checkbox, Link, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
-import { CardData, Website } from '../types';
+import { CardData, Website } from '../../types';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import { memo, useCallback } from 'react';
 

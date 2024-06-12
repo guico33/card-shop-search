@@ -1,5 +1,5 @@
 import { TableCell, Typography } from '@mui/material';
-import { CardData, Website } from '../types';
+import { CardData, Website } from '../../types';
 import { memo, useCallback } from 'react';
 
 type HeaderCellProps = {

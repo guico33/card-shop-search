@@ -1,8 +1,8 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
-import LinksList from './LinksList';
-import LinksTable from './LinksTable';
-import SearchCardInput from './SearchCardInput';
+import LinksList from './components/LinksList';
+import LinksTable from './components/LinksTable';
+import SearchCardInput from './components/SearchCardInput';
 import { CardData } from './types';
 import { generateLinks } from './utils';
 import useBreakpoints from './hooks/useBreakpoints';

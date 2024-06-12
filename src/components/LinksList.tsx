@@ -1,5 +1,5 @@
 import { Box, Link, Stack, Typography } from '@mui/material';
-import { Website } from './types';
+import { Website } from '../types';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 
 type LinksListProps = {

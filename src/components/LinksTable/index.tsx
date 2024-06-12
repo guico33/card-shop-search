@@ -8,9 +8,9 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
-import { websites } from '../constants';
-import useIndexedDB from '../hooks/useIndexedDB';
-import { CardData, Website } from '../types';
+import { websites } from '../../constants';
+import useIndexedDB from '../../hooks/useIndexedDB';
+import { CardData, Website } from '../../types';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
 import { useCallback } from 'react';
