@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { websites } from '../constants';
-import useLocalStorage from '../hooks/useLocalStorage';
+import useIndexedDB from '../hooks/useIndexedDB';
 import { CardData, Website } from '../types';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
@@ -24,7 +24,7 @@ type LinksTableProps = {
 export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTableProps) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [columns, setColumns] = useLocalStorage<Website[]>('columns', websites);
+  const [columns, setColumns] = useIndexedDB<Website[]>('columns', websites);
 
   const moveColumn = useCallback(
     (from: number, to: number) => {

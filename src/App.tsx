@@ -6,15 +6,15 @@ import SearchCardInput from './SearchCardInput';
 import { CardData } from './types';
 import { generateLinks } from './utils';
 import useBreakpoints from './hooks/useBreakpoints';
-import useLocalStorage from './hooks/useLocalStorage';
+import useIndexedDB from './hooks/useIndexedDB';
 
 function App() {
   const { isLgUp } = useBreakpoints();
-  const [cardListText, setCardListText] = useLocalStorage<string>('cardListText', '');
+  const [cardListText, setCardListText] = useIndexedDB<string>('cardList', '');
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const LinksContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const [links, setLinks] = useLocalStorage<CardData[]>('cardLinks', []);
+  const [links, setLinks] = useIndexedDB<CardData[]>('cardLinks', []);
 
   const handleChangeCardList = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
