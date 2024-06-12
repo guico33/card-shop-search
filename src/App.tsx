@@ -4,7 +4,9 @@ import LinksList from './LinksList';
 import LinksTable from './LinksTable';
 import SearchCardInput from './SearchCardInput';
 import { Website } from './types';
-import { generateLinks, useBreakpoints, useLocalStorage } from './utils';
+import { generateLinks } from './utils';
+import { useBreakpoints } from './hooks/useBreakpoints';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 function App() {
   const { isLgUp } = useBreakpoints();
