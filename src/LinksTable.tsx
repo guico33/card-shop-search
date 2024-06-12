@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Theme,
   Typography,
 } from '@mui/material';
 import { websites } from './constants';
@@ -35,16 +36,33 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
     });
   };
 
+  const headerStyles = {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    backgroundColor: (theme: Theme) => theme.palette.background.paper,
+    '& th': {
+      paddingBottom: 1.5,
+    },
+  };
+
   return (
-    <TableContainer>
+    <TableContainer
+      sx={{
+        overflowX: 'initial',
+      }}
+    >
       <Table>
-        <TableHead>
+        <TableHead sx={headerStyles}>
           <TableRow>
-            <TableCell>Card Name</TableCell>
+            <TableCell sx={{ verticalAlign: 'bottom' }}>
+              <Typography>Card Name</Typography>
+            </TableCell>
             {columns.map((website) => {
               return (
                 <TableCell
                   key={website}
+                  sx={{ verticalAlign: 'bottom' }}
                   onDragStart={(e) => {
                     e.dataTransfer.setData('text/plain', website);
                   }}
@@ -91,12 +109,15 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    whiteSpace: 'nowrap',
+                    maxWidth: '300px',
                   }}
                 >
                   <Typography
                     role="button"
-                    sx={{ cursor: 'pointer' }}
+                    noWrap
+                    sx={{
+                      cursor: 'pointer',
+                    }}
                     onClick={() => {
                       // open all links for this card
                       Object.values(link.links).forEach((link) => {
