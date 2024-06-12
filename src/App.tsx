@@ -5,8 +5,8 @@ import LinksTable from './LinksTable';
 import SearchCardInput from './SearchCardInput';
 import { CardData } from './types';
 import { generateLinks } from './utils';
-import { useBreakpoints } from './hooks/useBreakpoints';
-import { useLocalStorage } from './hooks/useLocalStorage';
+import useBreakpoints from './hooks/useBreakpoints';
+import useLocalStorage from './hooks/useLocalStorage';
 
 function App() {
   const { isLgUp } = useBreakpoints();
@@ -93,11 +93,24 @@ function App() {
               Clear
             </Button>
           </Box>
-          <TextareaAutosize
-            style={{ maxWidth: '300px', height: '500px', fontSize: '18px' }}
-            onChange={handleChangeCardList}
-            value={cardListText}
-          />
+          <Box
+            sx={{
+              width: {
+                xs: '100%',
+                lg: '300px',
+              },
+            }}
+          >
+            <TextareaAutosize
+              style={{
+                width: '100%',
+                height: '500px',
+                fontSize: '18px',
+              }}
+              onChange={handleChangeCardList}
+              value={cardListText}
+            />
+          </Box>
           <Button
             onClick={handleGenerateLinks}
             disabled={!cardListText}

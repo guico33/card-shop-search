@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 
-export const useBreakpoints = () => {
+const useBreakpoints = () => {
   const theme = useTheme();
 
   const isMd = useMediaQuery(theme.breakpoints.only('md'));
@@ -34,3 +34,5 @@ export const useBreakpoints = () => {
     breakpoints: theme.breakpoints.values,
   };
 };
+
+export default useBreakpoints;
