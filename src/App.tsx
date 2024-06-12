@@ -1,9 +1,9 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LinksList from './LinksList';
 import LinksTable from './LinksTable';
 import SearchCardInput from './SearchCardInput';
-import { Website } from './types';
+import { CardData } from './types';
 import { generateLinks } from './utils';
 import { useBreakpoints } from './hooks/useBreakpoints';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -14,18 +14,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const LinksContainerRef = React.useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const links = generateLinks(cardListText.trim());
-    setLinks(links);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const [links, setLinks] = useState<
-    {
-      cardName: string;
-      links: Record<Website, string>;
-    }[]
-  >([]);
+  const [links, setLinks] = useLocalStorage<CardData[]>('cardLinks', []);
 
   const handleChangeCardList = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const cardList = e.target.value;
@@ -33,8 +22,8 @@ function App() {
   };
 
   const handleGenerateLinks = () => {
-    const links = generateLinks(cardListText.trim());
-    setLinks(links);
+    const updatedLinks = generateLinks(cardListText.trim(), links);
+    setLinks(updatedLinks);
   };
 
   const handleAddCard = () => {
@@ -59,10 +48,23 @@ function App() {
     setLinks(updatedLinks);
   };
 
+  const handleToggleCheckCard = (cardName: string) => {
+    const updatedLinks = links.map((link) => {
+      if (link.cardName === cardName) {
+        return {
+          ...link,
+          checked: !link.checked,
+        };
+      }
+      return link;
+    });
+    setLinks(updatedLinks);
+  };
+
   const handleSearchNow = () => {
     const updatedCardListText = handleAddCard();
-    const links = generateLinks(updatedCardListText.trim());
-    setLinks(links);
+    const updatedLinks = generateLinks(updatedCardListText.trim(), links);
+    setLinks(updatedLinks);
   };
 
   const handleClear = () => {
@@ -107,7 +109,11 @@ function App() {
         <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
           {isLgUp ? (
-            <LinksTable links={links} onRemoveCard={handleRemoveCard} />
+            <LinksTable
+              links={links}
+              onRemoveCard={handleRemoveCard}
+              onToggleCheckCard={handleToggleCheckCard}
+            />
           ) : (
             <LinksList links={links} onRemoveCard={handleRemoveCard} />
           )}

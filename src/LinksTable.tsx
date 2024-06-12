@@ -1,26 +1,25 @@
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import {
-  TableContainer,
+  Checkbox,
+  Link,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  Link,
   Typography,
 } from '@mui/material';
 import { websites } from './constants';
-import { Website } from './types';
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { CardData } from './types';
 
 type LinksTableProps = {
-  links: {
-    cardName: string;
-    links: Record<Website, string>;
-  }[];
+  links: CardData[];
   onRemoveCard: (cardName: string) => void;
+  onToggleCheckCard: (cardName: string) => void;
 };
 
-export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
+export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTableProps) => (
   <TableContainer>
     <Table>
       <TableHead>
@@ -31,6 +30,7 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
               <TableCell
                 key={website}
                 sx={{ cursor: 'pointer' }}
+                role="button"
                 onClick={() => {
                   links.forEach((link) => {
                     window.open(link.links[website], '_blank');
@@ -41,27 +41,47 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
               </TableCell>
             );
           })}
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
-        {links.map((link) => {
+        {links.map((link, i) => {
           return (
-            <TableRow key={link.cardName}>
+            <TableRow
+              key={link.cardName}
+              sx={{
+                '&:nth-of-type(odd)': {
+                  backgroundColor: (theme) => theme.palette.action.hover,
+                },
+              }}
+            >
               <TableCell
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 2,
+                  justifyContent: 'space-between',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                <DisabledByDefaultIcon
+                <Typography
                   role="button"
                   sx={{ cursor: 'pointer' }}
                   onClick={() => {
-                    onRemoveCard(link.cardName);
+                    // open all links for this card
+                    Object.values(link.links).forEach((link) => {
+                      window.open(link, '_blank');
+                    });
+                  }}
+                >
+                  {i + 1}. {link.cardName}
+                </Typography>
+                <Checkbox
+                  checked={!!link.checked}
+                  value={!!link.checked}
+                  onChange={() => {
+                    onToggleCheckCard(link.cardName);
                   }}
                 />
-                <Typography>{link.cardName}</Typography>
               </TableCell>
               {websites.map((website) => {
                 return (
@@ -72,6 +92,15 @@ export const LinksTable = ({ links, onRemoveCard }: LinksTableProps) => (
                   </TableCell>
                 );
               })}
+              <TableCell>
+                <DisabledByDefaultIcon
+                  role="button"
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    onRemoveCard(link.cardName);
+                  }}
+                />
+              </TableCell>
             </TableRow>
           );
         })}
