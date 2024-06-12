@@ -26,8 +26,6 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
   // @ts-ignore
   const [columns, setColumns] = useLocalStorage<Website[]>('columns', websites);
 
-  console.log({ columns });
-
   const moveColumn = (from: number, to: number) => {
     setColumns((prev) => {
       const next = [...prev];
