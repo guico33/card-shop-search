@@ -9,6 +9,7 @@ export const websites = [
   'Mox & Lotus',
   'Agora Hobby',
   'Grey Ogre',
+  'Games Haven',
 ] as const;
 
 export const websiteToUrl: Record<Website, string> = {
@@ -20,4 +21,5 @@ export const websiteToUrl: Record<Website, string> = {
   'Mox & Lotus': 'https://moxandlotus.sg/products',
   'Agora Hobby': 'https://agorahobby.com/store/search',
   'Grey Ogre': 'https://www.greyogregames.com/search',
+  'Games Haven': 'https://www.gameshaventcg.com/search',
 };
