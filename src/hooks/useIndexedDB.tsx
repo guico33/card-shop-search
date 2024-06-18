@@ -18,7 +18,6 @@ const useIndexedDB = <T,>(key: string, initialValue: T) => {
 
   // Store the value in IndexedDB whenever it changes
   useEffect(() => {
-    console.log('set', key, debouncedValue);
     set(key, debouncedValue);
   }, [key, debouncedValue]);
 

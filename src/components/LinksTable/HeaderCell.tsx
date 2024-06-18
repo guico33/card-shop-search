@@ -1,15 +1,17 @@
 import { TableCell, Typography } from '@mui/material';
-import { CardData, Website } from '../../types';
+import { Website } from '../../types';
 import { memo, useCallback } from 'react';
+import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 
 type HeaderCellProps = {
   website: Website;
   columns: Website[];
   moveColumn: (from: number, to: number) => void;
-  links: CardData[];
 };
 
-const HeaderCell = memo(({ columns, links, moveColumn, website }: HeaderCellProps) => {
+const HeaderCell = memo(({ columns, moveColumn, website }: HeaderCellProps) => {
+  const { links, isNoCardsChecked } = useLinksContext();
+
   const handleDragStart = useCallback(
     (e: React.DragEvent<HTMLTableCellElement>) => {
       e.dataTransfer.setData('text/plain', website);
@@ -31,10 +33,18 @@ const HeaderCell = memo(({ columns, links, moveColumn, website }: HeaderCellProp
   );
 
   const handleClickWebsite = useCallback(() => {
-    links.forEach((link) => {
-      window.open(link.links[website], '_blank');
-    });
-  }, [links, website]);
+    if (isNoCardsChecked) {
+      links.forEach((link) => {
+        window.open(link.links[website], '_blank');
+      });
+    } else {
+      links
+        .filter((link) => link.checked)
+        .forEach((link) => {
+          window.open(link.links[website], '_blank');
+        });
+    }
+  }, [isNoCardsChecked, links, website]);
 
   return (
     <TableCell

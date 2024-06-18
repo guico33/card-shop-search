@@ -1,4 +1,6 @@
 import {
+  Box,
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -10,18 +12,20 @@ import {
 } from '@mui/material';
 import { websites } from '../../constants';
 import useIndexedDB from '../../hooks/useIndexedDB';
-import { CardData, Website } from '../../types';
+import { Website } from '../../types';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
 import { useCallback } from 'react';
+import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 
 type LinksTableProps = {
-  links: CardData[];
   onRemoveCard: (cardName: string) => void;
-  onToggleCheckCard: (cardName: string) => void;
 };
 
-export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTableProps) => {
+export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
+  const { links, toggleCheckCard, isAllCardsChecked, isSomeCardsChecked, toggleCheckAllCards } =
+    useLinksContext();
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [columns, setColumns] = useIndexedDB<Website[]>('columns', websites);
@@ -57,8 +61,26 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
       <Table>
         <TableHead sx={headerStyles}>
           <TableRow>
-            <TableCell sx={{ verticalAlign: 'bottom' }}>
-              <Typography>Card Name</Typography>
+            <TableCell
+              sx={{
+                verticalAlign: 'bottom',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  maxWidth: '300px',
+                }}
+              >
+                <Typography>Card Name</Typography>
+                <Checkbox
+                  indeterminate={isSomeCardsChecked}
+                  checked={isAllCardsChecked}
+                  onClick={toggleCheckAllCards}
+                />
+              </Box>
             </TableCell>
             {columns.map((website) => (
               <HeaderCell
@@ -66,7 +88,6 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
                 key={website}
                 moveColumn={moveColumn}
                 website={website}
-                links={links}
               />
             ))}
             <TableCell />
@@ -80,7 +101,7 @@ export const LinksTable = ({ links, onRemoveCard, onToggleCheckCard }: LinksTabl
                 link={link}
                 index={i}
                 columns={columns}
-                onToggleCheckCard={onToggleCheckCard}
+                onToggleCheckCard={toggleCheckCard}
                 onRemoveCard={onRemoveCard}
               />
             );

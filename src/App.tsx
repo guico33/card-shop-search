@@ -3,10 +3,9 @@ import React, { useCallback, useState } from 'react';
 import LinksList from './components/LinksList';
 import LinksTable from './components/LinksTable';
 import SearchCardInput from './components/SearchCardInput';
-import { CardData } from './types';
-import { generateLinks } from './utils';
 import useBreakpoints from './hooks/useBreakpoints';
 import useIndexedDB from './hooks/useIndexedDB';
+import { useLinksContext } from './contexts/LinksContext/useLinksContext';
 
 function App() {
   const { isLgUp } = useBreakpoints();
@@ -14,7 +13,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const LinksContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const [links, setLinks] = useIndexedDB<CardData[]>('cardLinks', []);
+  const { links, generateLinks, clearLinks, removeCard } = useLinksContext();
 
   const handleChangeCardList = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -25,11 +24,8 @@ function App() {
   );
 
   const handleGenerateLinks = useCallback(() => {
-    setLinks((prevLinks) => {
-      const updatedLinks = generateLinks(cardListText.trim(), prevLinks);
-      return updatedLinks;
-    });
-  }, [cardListText, setLinks]);
+    generateLinks(cardListText);
+  }, [cardListText, generateLinks]);
 
   const handleAddCard = useCallback(() => {
     const cardName = `1x ${selectedCard}`;
@@ -43,53 +39,29 @@ function App() {
     return updatedCardListText;
   }, [cardListText, selectedCard, setCardListText]);
 
-  const handleRemoveCard = useCallback(
-    (cardName: string) => {
-      setLinks((prevLinks) => {
-        const updatedCardListText = cardListText
-          .split('\n')
-          .filter((card) => !card.includes(cardName))
-          .join('\n');
-        setCardListText(updatedCardListText);
-        const updatedLinks = prevLinks.filter((link) => link.cardName !== cardName);
-        return updatedLinks;
-      });
-    },
-    [cardListText, setCardListText, setLinks],
-  );
-
-  const handleToggleCheckCard = useCallback(
-    (cardName: string) => {
-      setLinks((prevLinks) => {
-        const updatedLinks = prevLinks.map((link) => {
-          if (link.cardName === cardName) {
-            return {
-              ...link,
-              checked: !link.checked,
-            };
-          }
-          return link;
-        });
-        return updatedLinks;
-      });
-    },
-    [setLinks],
-  );
-
   const handleSearchNow = useCallback(() => {
     const updatedCardListText = handleAddCard();
-    setLinks((prevLinks) => {
-      const updatedLinks = generateLinks(updatedCardListText.trim(), prevLinks);
-      return updatedLinks;
-    });
-  }, [handleAddCard, setLinks]);
+    generateLinks(updatedCardListText);
+  }, [generateLinks, handleAddCard]);
 
   const handleClear = useCallback(() => {
     if (confirm('Are you sure you want to clear the cards list?')) {
       setCardListText('');
-      setLinks([]);
+      clearLinks();
     }
-  }, [setCardListText, setLinks]);
+  }, [clearLinks, setCardListText]);
+
+  const handleRemoveCard = useCallback(
+    (cardName: string) => {
+      removeCard(cardName);
+      const updatedCardListText = cardListText
+        .split('\n')
+        .filter((card) => !card.includes(cardName))
+        .join('\n');
+      setCardListText(updatedCardListText);
+    },
+    [cardListText, removeCard, setCardListText],
+  );
 
   return (
     <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
@@ -139,13 +111,9 @@ function App() {
         <Stack spacing={3} ref={LinksContainerRef}>
           <Typography variant="h4">Links</Typography>
           {isLgUp ? (
-            <LinksTable
-              links={links}
-              onRemoveCard={handleRemoveCard}
-              onToggleCheckCard={handleToggleCheckCard}
-            />
+            <LinksTable onRemoveCard={handleRemoveCard} />
           ) : (
-            <LinksList links={links} onRemoveCard={handleRemoveCard} />
+            <LinksList onRemoveCard={handleRemoveCard} />
           )}
         </Stack>
       </Stack>

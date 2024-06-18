@@ -3,7 +3,7 @@ import { CardData, Website } from './types';
 
 const cardNameParsingRegex = /(\d)*x*(\s)*(?<cardName>.+)/;
 
-export const generateLinks = (cardList: string, existingLinks: CardData[]): CardData[] => {
+export const getLinksList = (cardList: string, existingLinks: CardData[]): CardData[] => {
   const cardListArray = cardList.split('\n').filter((card) => card.trim() !== '');
 
   return cardListArray.map((card) => {
