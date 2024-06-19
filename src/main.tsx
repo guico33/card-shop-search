@@ -1,6 +1,9 @@
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline } from '@mui/material';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
+
 import App from './App.tsx';
 import LinksProvider from './contexts/LinksContext/LinksProvider.tsx';
 

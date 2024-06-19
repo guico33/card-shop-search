@@ -1,6 +1,6 @@
 import axios from 'axios';
+import uniqBy from 'lodash/uniqBy';
 import { useQuery } from 'react-query';
-import { uniqBy } from 'lodash';
 
 const scryfallApi = axios.create({
   baseURL: 'https://api.scryfall.com',

@@ -1,5 +1,6 @@
-import { Box, Link, Stack, Typography } from '@mui/material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { Box, Link, Stack, Typography } from '@mui/material';
+
 import { useLinksContext } from '../contexts/LinksContext/useLinksContext';
 
 type LinksListProps = {

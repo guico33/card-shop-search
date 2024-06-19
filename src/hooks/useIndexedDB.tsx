@@ -1,5 +1,6 @@
 import { get, set } from 'idb-keyval';
 import { useEffect, useState } from 'react';
+
 import useDebounce from './useDebounce';
 
 const useIndexedDB = <T,>(key: string, initialValue: T) => {

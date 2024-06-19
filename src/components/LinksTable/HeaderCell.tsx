@@ -1,7 +1,8 @@
 import { TableCell, Typography } from '@mui/material';
-import { Website } from '../../types';
 import { memo, useCallback } from 'react';
+
 import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
+import { Website } from '../../types';
 
 type HeaderCellProps = {
   website: Website;

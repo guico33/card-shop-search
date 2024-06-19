@@ -1,11 +1,12 @@
 import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
+
 import LinksList from './components/LinksList';
 import LinksTable from './components/LinksTable';
 import SearchCardInput from './components/SearchCardInput';
+import { useLinksContext } from './contexts/LinksContext/useLinksContext';
 import useBreakpoints from './hooks/useBreakpoints';
 import useIndexedDB from './hooks/useIndexedDB';
-import { useLinksContext } from './contexts/LinksContext/useLinksContext';
 
 function App() {
   const { isLgUp } = useBreakpoints();

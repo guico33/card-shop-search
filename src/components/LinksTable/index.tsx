@@ -10,13 +10,14 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
+import { useCallback } from 'react';
+
 import { websites } from '../../constants';
+import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 import useIndexedDB from '../../hooks/useIndexedDB';
 import { Website } from '../../types';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
-import { useCallback } from 'react';
-import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 
 type LinksTableProps = {
   onRemoveCard: (cardName: string) => void;

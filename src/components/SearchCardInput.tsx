@@ -1,7 +1,7 @@
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import { Autocomplete, TextField } from '@mui/material';
 import * as React from 'react';
 import { useEffect } from 'react';
+
 import { useSearchCards } from '../api';
 import useDebounce from '../hooks/useDebounce';
 
