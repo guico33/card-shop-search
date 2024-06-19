@@ -1,6 +1,4 @@
-import { websites } from './constants';
-
-export type Website = (typeof websites)[number];
+import { Website } from './shops';
 
 export type CardData = {
   cardName: string;

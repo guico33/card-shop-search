@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import App from './App.tsx';
+import AuthProvider from './contexts/AuthContext/AuthProvider.tsx';
 import LinksProvider from './contexts/LinksContext/LinksProvider.tsx';
 
 const theme = createTheme({
@@ -18,10 +19,12 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ThemeProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
-      <LinksProvider>
-        <CssBaseline />
-        <App />
-      </LinksProvider>
+      <AuthProvider>
+        <LinksProvider>
+          <CssBaseline />
+          <App />
+        </LinksProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </ThemeProvider>,
 );

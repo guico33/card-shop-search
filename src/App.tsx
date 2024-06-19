@@ -7,6 +7,7 @@ import SearchCardInput from './components/SearchCardInput';
 import { useLinksContext } from './contexts/LinksContext/useLinksContext';
 import useBreakpoints from './hooks/useBreakpoints';
 import useIndexedDB from './hooks/useIndexedDB';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
   const { isLgUp } = useBreakpoints();
@@ -65,60 +66,62 @@ function App() {
   );
 
   return (
-    <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
-      <Stack direction={{ xs: 'column', lg: 'row' }} spacing={4}>
-        <Stack spacing={3}>
-          <Typography variant="h4">Cards list</Typography>
-          <Stack direction="row" spacing={2}>
-            <SearchCardInput selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
-          </Stack>
-          <Box display="flex" gap={2} justifyContent={'space-between'}>
-            <Button onClick={handleAddCard} disabled={!selectedCard} size="small">
-              Add
-            </Button>
-            <Button disabled={!selectedCard} onClick={handleSearchNow}>
-              Search Now
-            </Button>
-            <Button onClick={handleClear} disabled={!cardListText && links.length === 0}>
-              Clear
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              width: {
-                xs: '100%',
-                lg: '300px',
-              },
-            }}
-          >
-            <TextareaAutosize
-              style={{
-                width: '100%',
-                height: '500px',
-                fontSize: '18px',
+    <MainLayout>
+      <Container sx={{ pt: 2, pb: 4 }} maxWidth="xl">
+        <Stack direction={{ xs: 'column', lg: 'row' }} spacing={4}>
+          <Stack spacing={3}>
+            <Typography variant="h4">Cards list</Typography>
+            <Stack direction="row" spacing={2}>
+              <SearchCardInput selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
+            </Stack>
+            <Box display="flex" gap={2} justifyContent={'space-between'}>
+              <Button onClick={handleAddCard} disabled={!selectedCard} size="small">
+                Add
+              </Button>
+              <Button disabled={!selectedCard} onClick={handleSearchNow}>
+                Search Now
+              </Button>
+              <Button onClick={handleClear} disabled={!cardListText && links.length === 0}>
+                Clear
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                width: {
+                  xs: '100%',
+                  lg: '300px',
+                },
               }}
-              onChange={handleChangeCardList}
-              value={cardListText}
-            />
-          </Box>
-          <Button
-            onClick={handleGenerateLinks}
-            disabled={!cardListText}
-            sx={{ width: 'fit-content' }}
-          >
-            Generate links
-          </Button>
+            >
+              <TextareaAutosize
+                style={{
+                  width: '100%',
+                  height: '500px',
+                  fontSize: '18px',
+                }}
+                onChange={handleChangeCardList}
+                value={cardListText}
+              />
+            </Box>
+            <Button
+              onClick={handleGenerateLinks}
+              disabled={!cardListText}
+              sx={{ width: 'fit-content' }}
+            >
+              Generate links
+            </Button>
+          </Stack>
+          <Stack spacing={3} ref={LinksContainerRef}>
+            <Typography variant="h4">Links</Typography>
+            {isLgUp ? (
+              <LinksTable onRemoveCard={handleRemoveCard} />
+            ) : (
+              <LinksList onRemoveCard={handleRemoveCard} />
+            )}
+          </Stack>
         </Stack>
-        <Stack spacing={3} ref={LinksContainerRef}>
-          <Typography variant="h4">Links</Typography>
-          {isLgUp ? (
-            <LinksTable onRemoveCard={handleRemoveCard} />
-          ) : (
-            <LinksList onRemoveCard={handleRemoveCard} />
-          )}
-        </Stack>
-      </Stack>
-    </Container>
+      </Container>
+    </MainLayout>
   );
 }
 

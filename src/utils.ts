@@ -1,5 +1,6 @@
-import { websites,websiteToUrl } from './constants';
-import { CardData, Website } from './types';
+import { websites, websiteToUrl } from './constants';
+import { CardData } from './types/card';
+import { Website } from './types/shops';
 
 const cardNameParsingRegex = /(\d)*x*(\s)*(?<cardName>.+)/;
 

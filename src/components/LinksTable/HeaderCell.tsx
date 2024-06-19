@@ -2,7 +2,7 @@ import { TableCell, Typography } from '@mui/material';
 import { memo, useCallback } from 'react';
 
 import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
-import { Website } from '../../types';
+import { Website } from '../../types/shops';
 
 type HeaderCellProps = {
   website: Website;

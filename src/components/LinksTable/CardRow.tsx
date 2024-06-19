@@ -2,7 +2,8 @@ import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import { Checkbox, Link, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
 import { memo } from 'react';
 
-import { CardData, Website } from '../../types';
+import { CardData } from '../../types/card';
+import { Website } from '../../types/shops';
 
 type CardRowProps = {
   link: CardData;

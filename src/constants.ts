@@ -1,4 +1,4 @@
-import { Website } from './types';
+import { Website } from './types/shops';
 
 export const websites = [
   'Hareruya',

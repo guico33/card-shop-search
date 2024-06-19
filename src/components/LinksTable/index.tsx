@@ -15,7 +15,7 @@ import { useCallback } from 'react';
 import { websites } from '../../constants';
 import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 import useIndexedDB from '../../hooks/useIndexedDB';
-import { Website } from '../../types';
+import { Website } from '../../types/shops';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
 
@@ -45,7 +45,7 @@ export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
 
   const headerStyles = {
     position: 'sticky',
-    top: 0,
+    top: 63,
     zIndex: 1,
     backgroundColor: (theme: Theme) => theme.palette.background.paper,
     '& th': {
