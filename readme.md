@@ -12,4 +12,6 @@ Open multiple links at once with a click on the shop's name or the card's name.
 
 Drag and drop shops' names to reorder them.
 
-Selected cards are saved in the browser.
+Google authentication with Firebase.
+
+Generated links saved to firestore database for logged in users, in the browser's indexedDB otherwise.
