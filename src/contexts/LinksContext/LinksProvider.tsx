@@ -68,7 +68,7 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
 
   // Save the links to Firestore when the user logs in
   useEffect(() => {
-    if (user && !loading && linksFetched && !links.length) {
+    if (user && !loading && linksFetched && links.length > 0) {
       const saveData = async () => {
         const docRef = doc(db, 'users', user.uid);
         await setDoc(docRef, { links });
