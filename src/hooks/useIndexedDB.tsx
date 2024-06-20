@@ -5,6 +5,7 @@ import useDebounce from './useDebounce';
 
 const useIndexedDB = <T,>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [loading, setLoading] = useState(true);
 
   // Fetch the value from IndexedDB on mount
   useEffect(() => {
@@ -12,6 +13,7 @@ const useIndexedDB = <T,>(key: string, initialValue: T) => {
       if (value !== undefined) {
         setStoredValue(value);
       }
+      setLoading(false);
     });
   }, [key]);
 
@@ -22,7 +24,7 @@ const useIndexedDB = <T,>(key: string, initialValue: T) => {
     set(key, debouncedValue);
   }, [key, debouncedValue]);
 
-  return [storedValue, setStoredValue] as const;
+  return [storedValue, setStoredValue, loading] as const;
 };
 
 export default useIndexedDB;

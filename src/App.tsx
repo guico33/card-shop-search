@@ -1,4 +1,12 @@
-import { Box, Button, Container, Stack, TextareaAutosize, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  TextareaAutosize,
+  Typography,
+} from '@mui/material';
 import React, { useCallback, useState } from 'react';
 
 import LinksList from './components/LinksList';
@@ -13,9 +21,8 @@ function App() {
   const { isLgUp } = useBreakpoints();
   const [cardListText, setCardListText] = useIndexedDB<string>('cardList', '');
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
-  const LinksContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const { links, generateLinks, clearLinks, removeCard } = useLinksContext();
+  const { links, generateLinks, clearLinks, removeCard, fetchingLinks } = useLinksContext();
 
   const handleChangeCardList = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -111,13 +118,20 @@ function App() {
               Generate links
             </Button>
           </Stack>
-          <Stack spacing={3} ref={LinksContainerRef}>
+          <Stack spacing={3} width="100%">
             <Typography variant="h4">Links</Typography>
-            {isLgUp ? (
-              <LinksTable onRemoveCard={handleRemoveCard} />
-            ) : (
-              <LinksList onRemoveCard={handleRemoveCard} />
+            {fetchingLinks && (
+              <Box display="flex" justifyContent="center" alignItems="center" gap={2} width="100%">
+                <Typography variant="caption">Fetching links...</Typography>
+                <CircularProgress size={20} />
+              </Box>
             )}
+            {!fetchingLinks &&
+              (isLgUp ? (
+                <LinksTable onRemoveCard={handleRemoveCard} />
+              ) : (
+                <LinksList onRemoveCard={handleRemoveCard} />
+              ))}
           </Stack>
         </Stack>
       </Container>

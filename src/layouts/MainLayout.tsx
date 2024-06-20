@@ -20,9 +20,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </Typography>
           {user ? (
             <Box display="flex" alignItems={'center'} gap={1}>
-              <Typography variant="body1" sx={{ marginRight: 2 }}>
+              <Typography
+                variant="body1"
+                sx={{ marginRight: 2 }}
+                display={{
+                  xs: 'none',
+                  sm: 'block',
+                }}
+              >
                 {user.email}
               </Typography>
+
               <LogoutButton />
             </Box>
           ) : (

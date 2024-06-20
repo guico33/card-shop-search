@@ -6,10 +6,7 @@ import { auth, googleProvider } from '../firebaseConfig';
 const SignInButton = () => {
   const signInWithGoogle = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      // The signed-in user info.
-      const user = result.user;
-      console.log('User Info:', user);
+      await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error('Error during sign in:', error);
     }
