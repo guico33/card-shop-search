@@ -4,7 +4,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { Routes } from './constants/router.ts';
+import { AppRoutes } from './constants/router.ts';
 import AuthProvider from './contexts/AuthContext/AuthProvider.tsx';
 import LinksProvider from './contexts/LinksContext/LinksProvider.tsx';
 import History from './pages/History.tsx';
@@ -21,11 +21,11 @@ const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: Routes.HOME,
+    path: AppRoutes.HOME,
     element: <Home />,
   },
   {
-    path: Routes.HISTORY,
+    path: AppRoutes.HISTORY,
     element: <ProtectedRoute element={<History />} />,
   },
 ]);

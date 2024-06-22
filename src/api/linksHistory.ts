@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import useAuthContext from '../contexts/AuthContext/useAuthContext';
@@ -10,38 +10,36 @@ const updateLinksHistory = async (userId: string, links: CardData[]) => {
 
   const userDocSnap = await getDoc(userDocRef);
 
+  let linksHistory: CardData[] = [];
+
   if (userDocSnap.exists()) {
     const userData = userDocSnap.data();
-    let linksHistory: CardData[] = userData.linksHistory || [];
-
-    links.forEach((newLink) => {
-      // Check if the link already exists
-      const existingLinkIndex = linksHistory.findIndex(
-        (link) => link.cardName === newLink.cardName,
-      );
-
-      if (existingLinkIndex !== -1) {
-        // Update the timestamp of the existing link
-        linksHistory[existingLinkIndex].timestamp = Timestamp.now();
-      } else {
-        // Add new link
-        linksHistory.push({ ...newLink, timestamp: Timestamp.now() });
-      }
-    });
-
-    // Limit the history to 100 entries
-    if (linksHistory.length > 100) {
-      linksHistory = linksHistory.slice(-100);
-    }
-
-    // Update the document with the new history array
-    await updateDoc(userDocRef, { linksHistory });
-  } else {
-    // Create new document if it doesn't exist
-    await setDoc(userDocRef, {
-      linksHistory: links.map((link) => ({ ...link, timestamp: Timestamp.now() })),
-    });
+    linksHistory = userData.linksHistory || [];
   }
+
+  links.forEach((newLink) => {
+    // Check if the link already exists
+    const existingLinkIndex = linksHistory.findIndex((link) => link.cardName === newLink.cardName);
+
+    if (existingLinkIndex !== -1) {
+      // Update the entire existing link object
+      linksHistory[existingLinkIndex] = {
+        ...newLink,
+        timestamp: Timestamp.now(),
+      };
+    } else {
+      // Add new link
+      linksHistory.push({ ...newLink, timestamp: Timestamp.now() });
+    }
+  });
+
+  // Limit the history to 100 entries
+  if (linksHistory.length > 100) {
+    linksHistory = linksHistory.slice(-100);
+  }
+
+  // Update the document with the new history array
+  await setDoc(userDocRef, { linksHistory });
 };
 
 export const useUpdateLinksHistory = (userId?: string) => {

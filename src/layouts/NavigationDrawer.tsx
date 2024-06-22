@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Routes } from '../constants/router';
+import { AppRoutes } from '../constants/router';
 import useAuthContext from '../contexts/AuthContext/useAuthContext';
 
 type NavigationDrawerProps = {
@@ -26,7 +26,7 @@ const NavigationDrawer = ({ open, onClose }: NavigationDrawerProps) => {
     <Box sx={{ width: 250 }} role="presentation" onClick={onClose} onKeyDown={onClose}>
       <List>
         <ListItem disablePadding>
-          <ListItemButton component={RouterLink} to={Routes.HOME}>
+          <ListItemButton component={RouterLink} to={AppRoutes.HOME}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -35,7 +35,7 @@ const NavigationDrawer = ({ open, onClose }: NavigationDrawerProps) => {
         </ListItem>
         {user && (
           <ListItem disablePadding>
-            <ListItemButton component={RouterLink} to={Routes.HISTORY}>
+            <ListItemButton component={RouterLink} to={AppRoutes.HISTORY}>
               <ListItemIcon>
                 <HistoryIcon />
               </ListItemIcon>

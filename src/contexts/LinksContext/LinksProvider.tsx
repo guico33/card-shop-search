@@ -35,6 +35,8 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
 
   const { mutate: updateLinksHistory } = useUpdateLinksHistory(user?.uid);
 
+  console.log('links:', links);
+
   // Fetch the links from Firestore when the user logs in
   // after links have been fetched from IndexedDB
   useEffect(() => {
@@ -46,7 +48,7 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const links = docSnap.data().links;
+          const links = docSnap.data().links ?? [];
           setLinks(links);
         }
       };
