@@ -70,7 +70,9 @@ const CardRow = memo(
           >
             {index + 1}. {link.cardName}
           </Typography>
-          <Checkbox checked={!!link.checked} value={!!link.checked} onChange={handleCheckCard} />
+          {props.viewType === 'regular' && (
+            <Checkbox checked={!!link.checked} value={!!link.checked} onChange={handleCheckCard} />
+          )}
         </TableCell>
         {columns.map((website) => {
           return (
