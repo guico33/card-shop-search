@@ -1,6 +1,7 @@
 import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useUpdateLinksHistory } from '../../api/linksHistory';
 import { db } from '../../firebaseConfig';
 import useIndexedDB from '../../hooks/useIndexedDB';
 import { CardData } from '../../types/card';
@@ -28,14 +29,16 @@ type LinksProviderProps = {
 
 const LinksProvider = ({ children }: LinksProviderProps) => {
   const { user } = useAuthContext();
-  const [links, setLinks, loading] = useIndexedDB<CardData[]>('cardLinks', []);
+  const [links, setLinks, loadingIndexedDB] = useIndexedDB<CardData[]>('cardLinks', []);
   const [linksFetched, setLinksFetched] = useState(false);
   const [fetchingLinks, setFetchingLinks] = useState(false);
+
+  const { mutate: updateLinksHistory } = useUpdateLinksHistory(user?.uid);
 
   // Fetch the links from Firestore when the user logs in
   // after links have been fetched from IndexedDB
   useEffect(() => {
-    if (user && !loading && !linksFetched) {
+    if (user && !loadingIndexedDB && !linksFetched) {
       setFetchingLinks(true);
 
       const fetchData = async () => {
@@ -57,7 +60,7 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
           setFetchingLinks(false);
         });
     }
-  }, [user, setLinks, loading, linksFetched]);
+  }, [user, setLinks, loadingIndexedDB, linksFetched]);
 
   // Reset linksFetched when the user logs out
   useEffect(() => {
@@ -66,9 +69,8 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
     }
   }, [user, linksFetched]);
 
-  // Save the links to Firestore when the user logs in
   useEffect(() => {
-    if (user && !loading && linksFetched && links.length > 0) {
+    if (user && !loadingIndexedDB && linksFetched && links.length > 0) {
       const saveData = async () => {
         const docRef = doc(db, 'users', user.uid);
         await setDoc(docRef, { links });
@@ -78,7 +80,13 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
         console.error('Error saving links:', error);
       });
     }
-  }, [links, linksFetched, loading, user]);
+  }, [links, linksFetched, loadingIndexedDB, user]);
+
+  useEffect(() => {
+    if (user && links.length > 0) {
+      updateLinksHistory(links);
+    }
+  }, [links, linksFetched, updateLinksHistory, user]);
 
   const removeCard = useCallback(
     (cardName: string) => {

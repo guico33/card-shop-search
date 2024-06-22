@@ -1,3 +1,4 @@
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import {
   Box,
   Checkbox,
@@ -12,24 +13,43 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 
-import { websites } from '../../constants';
+import { websites } from '../../constants/stores';
 import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
 import useIndexedDB from '../../hooks/useIndexedDB';
+import { CardData } from '../../types/card';
 import { Website } from '../../types/shops';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
 
-type LinksTableProps = {
+type RegularLinksTableProps = {
+  viewType: 'regular';
+  links: CardData[];
   onRemoveCard: (cardName: string) => void;
+  toggleCheckCard: (cardName: string) => void;
+  toggleCheckAllCards: () => void;
+  isAllCardsChecked: boolean;
+  isSomeCardsChecked: boolean;
 };
 
-export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
-  const { links, toggleCheckCard, isAllCardsChecked, isSomeCardsChecked, toggleCheckAllCards } =
-    useLinksContext();
+type HistoryLinksTableProps = {
+  viewType: 'history';
+  links: CardData[];
+};
 
+type LinksTableProps = RegularLinksTableProps | HistoryLinksTableProps;
+
+export const LinksTable = ({ links, ...props }: LinksTableProps) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [columns, setColumns] = useIndexedDB<Website[]>('columns', websites);
+
+  const { clearLinks } = useLinksContext();
+
+  const handleClearLinks = useCallback(() => {
+    if (confirm('Are you sure you want to clear the links?')) {
+      clearLinks();
+    }
+  }, [clearLinks]);
 
   const moveColumn = useCallback(
     (from: number, to: number) => {
@@ -76,11 +96,13 @@ export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
                 }}
               >
                 <Typography>Card Name</Typography>
-                <Checkbox
-                  indeterminate={isSomeCardsChecked}
-                  checked={isAllCardsChecked}
-                  onClick={toggleCheckAllCards}
-                />
+                {props.viewType === 'regular' && (
+                  <Checkbox
+                    indeterminate={props.isSomeCardsChecked}
+                    checked={props.isAllCardsChecked}
+                    onClick={props.toggleCheckAllCards}
+                  />
+                )}
               </Box>
             </TableCell>
             {columns.map((website) => (
@@ -91,7 +113,15 @@ export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
                 website={website}
               />
             ))}
-            <TableCell />
+            {props.viewType === 'regular' && (
+              <TableCell>
+                <DisabledByDefaultIcon
+                  role="button"
+                  sx={{ cursor: 'pointer', mt: 3 }}
+                  onClick={handleClearLinks}
+                />
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -102,8 +132,13 @@ export const LinksTable = ({ onRemoveCard }: LinksTableProps) => {
                 link={link}
                 index={i}
                 columns={columns}
-                onToggleCheckCard={toggleCheckCard}
-                onRemoveCard={onRemoveCard}
+                {...(props.viewType === 'regular'
+                  ? {
+                      viewType: 'regular',
+                      onToggleCheckCard: props.toggleCheckCard,
+                      onRemoveCard: props.onRemoveCard,
+                    }
+                  : { viewType: 'history' })}
               />
             );
           })}

@@ -1,4 +1,4 @@
-import { websites, websiteToUrl } from './constants';
+import { websites, websiteToUrl } from './constants/stores';
 import { CardData } from './types/card';
 import { Website } from './types/shops';
 

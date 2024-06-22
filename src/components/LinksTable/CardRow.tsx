@@ -5,16 +5,26 @@ import { memo } from 'react';
 import { CardData } from '../../types/card';
 import { Website } from '../../types/shops';
 
-type CardRowProps = {
+type CommonCardRowProps = {
   link: CardData;
   columns: Website[];
   index: number;
+};
+
+type RegularCardRowProps = CommonCardRowProps & {
+  viewType: 'regular';
   onToggleCheckCard: (cardName: string) => void;
   onRemoveCard: (cardName: string) => void;
 };
 
+type HistoryCardRowProps = CommonCardRowProps & {
+  viewType: 'history';
+};
+
+type CardRowProps = RegularCardRowProps | HistoryCardRowProps;
+
 const CardRow = memo(
-  ({ link, columns, index, onToggleCheckCard, onRemoveCard }: CardRowProps) => {
+  ({ link, columns, index, ...props }: CardRowProps) => {
     const handleClickCardName = () => {
       Object.values(link.links).forEach((link) => {
         window.open(link, '_blank');
@@ -22,11 +32,15 @@ const CardRow = memo(
     };
 
     const handleCheckCard = () => {
-      onToggleCheckCard(link.cardName);
+      if (props.viewType === 'regular') {
+        props.onToggleCheckCard(link.cardName);
+      }
     };
 
     const handleRemoveCard = () => {
-      onRemoveCard(link.cardName);
+      if (props.viewType === 'regular') {
+        props.onRemoveCard(link.cardName);
+      }
     };
 
     return (
@@ -69,13 +83,15 @@ const CardRow = memo(
             </TableCell>
           );
         })}
-        <TableCell>
-          <DisabledByDefaultIcon
-            role="button"
-            sx={{ cursor: 'pointer' }}
-            onClick={handleRemoveCard}
-          />
-        </TableCell>
+        {props.viewType === 'regular' && (
+          <TableCell>
+            <DisabledByDefaultIcon
+              role="button"
+              sx={{ cursor: 'pointer' }}
+              onClick={handleRemoveCard}
+            />
+          </TableCell>
+        )}
       </TableRow>
     );
   },

@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import { useSearchCards } from '../api';
+import { useSearchCards } from '../api/scryfall';
 import useDebounce from '../hooks/useDebounce';
 
 type SearchCardInputProps = {

@@ -1,14 +1,22 @@
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import { Box, Link, Stack, Typography } from '@mui/material';
 
-import { useLinksContext } from '../contexts/LinksContext/useLinksContext';
+import { CardData } from '../types/card';
 
-type LinksListProps = {
+type RegularLinksListProps = {
+  viewType: 'regular';
+  links: CardData[];
   onRemoveCard: (cardName: string) => void;
 };
 
-export const LinksList = ({ onRemoveCard }: LinksListProps) => {
-  const { links } = useLinksContext();
+type HistoryLinksListProps = {
+  viewType: 'history';
+  links: CardData[];
+};
+
+type LinksListProps = RegularLinksListProps | HistoryLinksListProps;
+
+export const LinksList = ({ links, ...props }: LinksListProps) => {
   return (
     <Stack spacing={2}>
       {links.map((link) => {
@@ -18,13 +26,15 @@ export const LinksList = ({ onRemoveCard }: LinksListProps) => {
               <Typography variant="h5" mb={2}>
                 {link.cardName}
               </Typography>
-              <DisabledByDefaultIcon
-                role="button"
-                sx={{ ml: 'auto', cursor: 'pointer' }}
-                onClick={() => {
-                  onRemoveCard(link.cardName);
-                }}
-              />
+              {props.viewType === 'regular' && (
+                <DisabledByDefaultIcon
+                  role="button"
+                  sx={{ ml: 'auto', cursor: 'pointer' }}
+                  onClick={() => {
+                    props.onRemoveCard(link.cardName);
+                  }}
+                />
+              )}
             </Box>
 
             <Box display="flex" flexDirection="row" gap={2} flexWrap={'wrap'}>
