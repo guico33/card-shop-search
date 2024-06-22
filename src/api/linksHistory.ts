@@ -39,7 +39,7 @@ const updateLinksHistory = async (userId: string, links: CardData[]) => {
   }
 
   // Update the document with the new history array
-  await setDoc(userDocRef, { linksHistory });
+  await setDoc(userDocRef, { linksHistory }, { merge: true });
 };
 
 export const useUpdateLinksHistory = (userId?: string) => {

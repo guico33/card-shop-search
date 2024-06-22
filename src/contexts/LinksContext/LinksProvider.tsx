@@ -35,8 +35,6 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
 
   const { mutate: updateLinksHistory } = useUpdateLinksHistory(user?.uid);
 
-  console.log('links:', links);
-
   // Fetch the links from Firestore when the user logs in
   // after links have been fetched from IndexedDB
   useEffect(() => {
@@ -44,23 +42,23 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
       setFetchingLinks(true);
 
       const fetchData = async () => {
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const links = docSnap.data().links ?? [];
-          setLinks(links);
+          if (docSnap.exists()) {
+            const links = docSnap.data().links ?? [];
+            setLinks(links);
+          }
+        } catch (error) {
+          console.error('Error fetching links:', error);
+        } finally {
+          setLinksFetched(true);
+          setFetchingLinks(false);
         }
       };
 
-      fetchData()
-        .catch((error) => {
-          console.error('Error fetching links:', error);
-        })
-        .finally(() => {
-          setLinksFetched(true);
-          setFetchingLinks(false);
-        });
+      fetchData();
     }
   }, [user, setLinks, loadingIndexedDB, linksFetched]);
 
@@ -74,13 +72,15 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
   useEffect(() => {
     if (user && !loadingIndexedDB && linksFetched && links.length > 0) {
       const saveData = async () => {
-        const docRef = doc(db, 'users', user.uid);
-        await setDoc(docRef, { links });
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          await setDoc(docRef, { links }, { merge: true });
+        } catch (error) {
+          console.error('Error saving links:', error);
+        }
       };
 
-      saveData().catch((error) => {
-        console.error('Error saving links:', error);
-      });
+      saveData();
     }
   }, [links, linksFetched, loadingIndexedDB, user]);
 

@@ -1,9 +1,11 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import LogoutButton from '../components/LogoutButton';
 import SignInButton from '../components/SignInButton';
+import { AppRoutes } from '../constants/router';
 import useAuthContext from '../contexts/AuthContext/useAuthContext';
 import NavigationDrawer from './NavigationDrawer';
 
@@ -38,7 +40,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component={Link}
+            to={AppRoutes.HOME}
+            sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
+          >
             Card Shop Search
           </Typography>
           {user ? (
