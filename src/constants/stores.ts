@@ -17,7 +17,7 @@ export const websiteToUrl: Record<Website, string> = {
   TokyoMTG: 'https://tokyomtg.com/cardpage.html',
   OneMTG: 'https://www.onemtg.com.sg/search',
   'Flagship Games': 'https://www.flagshipgames.sg/search',
-  Hideout: 'https://www.hideout-online.com/search',
+  Hideout: 'https://www.hideoutcg.com/search',
   'Mox & Lotus': 'https://moxandlotus.sg/products',
   'Agora Hobby': 'https://agorahobby.com/store/search',
   'Grey Ogre': 'https://www.greyogregames.com/search',
