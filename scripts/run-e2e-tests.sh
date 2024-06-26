@@ -4,7 +4,13 @@
 yarn run cleanup-ports
 
 # Run the test environment setup and Cypress tests
-start-server-and-test setup-test-env 127.0.0.1:5173 cypress:run
+yarn run setup-test-env &
+
+# wait for the dev server and firebase emulator to start
+wait-on -l -v tcp:5173 && wait-on -l -v tcp:9099 && wait-on -l -v tcp:8080
+
+# Run the Cypress tests
+yarn run cypress:run
 TEST_EXIT_CODE=$?
 
 # Always run cleanup ports after tests

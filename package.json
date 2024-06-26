@@ -17,7 +17,7 @@
     "preview": "vite preview",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
-    "cleanup-ports": "./scripts/kill-ports.sh 9099 8080 4000 5173 9150 4500",
+    "cleanup-ports": "./scripts/kill-ports.sh 9099 8080 4000 5173 9150 4500 4400",
     "setup-test-env": "yarn run emulator:start & yarn run dev:test",
     "test:e2e": "./scripts/run-e2e-tests.sh"
   },
@@ -50,8 +50,8 @@
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "gh-pages": "^5.0.0",
     "rollup-plugin-visualizer": "^5.12.0",
-    "start-server-and-test": "^2.0.4",
     "typescript": "^5.4.5",
-    "vite": "^4.3.0"
+    "vite": "^4.3.0",
+    "wait-on": "^7.2.0"
   }
 }
