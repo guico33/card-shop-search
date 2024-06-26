@@ -4,6 +4,6 @@ export default defineConfig({
   e2e: {
     viewportWidth: 1280,
     viewportHeight: 720,
-    baseUrl: Cypress.env('baseUrl'),
+    baseUrl: 'http://localhost:5173/card-shop-search/',
   },
 });
