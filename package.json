@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "dev:test": "vite --mode test",
+    "dev:test": "vite --mode test --host 0.0.0.0",
     "emulator:start": "firebase emulators:start",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
