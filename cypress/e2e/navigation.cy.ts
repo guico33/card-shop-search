@@ -11,7 +11,7 @@ describe('Navigation', () => {
         })
         .get('p', { timeout: 10000 })
         .should(($p) => {
-          expect($p).to.contain('No links to display');
+          expect($p).to.contain('No cards to display');
         })
         .get('[aria-label="menu"]')
         .click()
