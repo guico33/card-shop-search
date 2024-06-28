@@ -5,12 +5,14 @@ on:
     branches:
       - main
     paths:
+      - 'cypress/**'
       - 'src/**'
       - 'package.json'
   pull_request:
     branches:
       - main
     paths:
+      - 'cypress/**'
       - 'src/**'
       - 'package.json'
 
