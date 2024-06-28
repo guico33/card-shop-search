@@ -4,7 +4,7 @@ import { Website } from './types/shops';
 
 const cardNameParsingRegex = /(\d)*x*(\s)*(?<cardName>.+)/;
 
-export const getLinksList = (cardList: string, existingLinks: CardData[]): CardData[] => {
+export const getCardsList = (cardList: string, existingCards: CardData[]): CardData[] => {
   const cardListArray = cardList.split('\n').filter((card) => card.trim() !== '');
 
   return cardListArray.map((card) => {
@@ -14,8 +14,8 @@ export const getLinksList = (cardList: string, existingLinks: CardData[]): CardD
     cardName = cardName.split('(')[0].trim();
     return {
       cardName,
-      // if the card already exists in the links, keep the checked status
-      checked: existingLinks.find((link) => link.cardName === cardName)?.checked ?? false,
+      // if the card already exists, keep the checked status
+      checked: existingCards.find((card) => card.cardName === cardName)?.checked ?? false,
       links: Object.fromEntries(
         websites.map((website) => {
           let params: URLSearchParams = new URLSearchParams();

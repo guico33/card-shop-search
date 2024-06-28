@@ -14,16 +14,16 @@ import {
 import { useCallback } from 'react';
 
 import { websites } from '../../constants/stores';
-import { useLinksContext } from '../../contexts/LinksContext/useLinksContext';
+import { useCardsContext } from '../../contexts/CardsContext/useCardsContext';
 import useIndexedDB from '../../hooks/useIndexedDB';
 import { CardData } from '../../types/card';
 import { Website } from '../../types/shops';
 import CardRow from './CardRow';
 import HeaderCell from './HeaderCell';
 
-type RegularLinksTableProps = {
+type RegularCardsTableProps = {
   viewType: 'regular';
-  links: CardData[];
+  cards: CardData[];
   onRemoveCard: (cardName: string) => void;
   toggleCheckCard: (cardName: string) => void;
   toggleCheckAllCards: () => void;
@@ -31,25 +31,25 @@ type RegularLinksTableProps = {
   isSomeCardsChecked: boolean;
 };
 
-type HistoryLinksTableProps = {
+type HistoryCardsTableProps = {
   viewType: 'history';
-  links: CardData[];
+  cards: CardData[];
 };
 
-type LinksTableProps = RegularLinksTableProps | HistoryLinksTableProps;
+type CardsTableProps = RegularCardsTableProps | HistoryCardsTableProps;
 
-export const LinksTable = ({ links, ...props }: LinksTableProps) => {
+export const CardsTable = ({ cards, ...props }: CardsTableProps) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [columns, setColumns] = useIndexedDB<Website[]>('columns', websites);
 
-  const { clearLinks } = useLinksContext();
+  const { clearCards } = useCardsContext();
 
-  const handleClearLinks = useCallback(() => {
-    if (confirm('Are you sure you want to clear the links?')) {
-      clearLinks();
+  const handleClearCards = useCallback(() => {
+    if (confirm('Are you sure you want to clear the cards?')) {
+      clearCards();
     }
-  }, [clearLinks]);
+  }, [clearCards]);
 
   const moveColumn = useCallback(
     (from: number, to: number) => {
@@ -118,18 +118,18 @@ export const LinksTable = ({ links, ...props }: LinksTableProps) => {
                 <DisabledByDefaultIcon
                   role="button"
                   sx={{ cursor: 'pointer', mt: 3 }}
-                  onClick={handleClearLinks}
+                  onClick={handleClearCards}
                 />
               </TableCell>
             )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {links.map((link, i) => {
+          {cards.map((card, i) => {
             return (
               <CardRow
-                key={link.cardName}
-                link={link}
+                key={card.cardName}
+                card={card}
                 index={i}
                 columns={columns}
                 {...(props.viewType === 'regular'
@@ -148,4 +148,4 @@ export const LinksTable = ({ links, ...props }: LinksTableProps) => {
   );
 };
 
-export default LinksTable;
+export default CardsTable;

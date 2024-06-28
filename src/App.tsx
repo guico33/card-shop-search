@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { AppRoutes } from './constants/router.ts';
 import AuthProvider from './contexts/AuthContext/AuthProvider.tsx';
-import LinksProvider from './contexts/LinksContext/LinksProvider.tsx';
+import CardsProvider from './contexts/CardsContext/CardsProvider.tsx';
 import History from './pages/History.tsx';
 import Home from './pages/Home.tsx';
 import ProtectedRoute from './routing/ProtectedRoute.tsx';
@@ -34,10 +34,10 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <LinksProvider>
+        <CardsProvider>
           <CssBaseline />
           <RouterProvider router={router} />
-        </LinksProvider>
+        </CardsProvider>
       </QueryClientProvider>
     </AuthProvider>
   </ThemeProvider>

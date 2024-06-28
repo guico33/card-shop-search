@@ -9,10 +9,10 @@ import {
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 
-import LinksList from '../components/LinksList';
-import LinksTable from '../components/LinksTable';
+import CardsList from '../components/CardsList';
+import CardsTable from '../components/CardsTable';
 import SearchCardInput from '../components/SearchCardInput';
-import { useLinksContext } from '../contexts/LinksContext/useLinksContext';
+import { useCardsContext } from '../contexts/CardsContext/useCardsContext';
 import useBreakpoints from '../hooks/useBreakpoints';
 import useIndexedDB from '../hooks/useIndexedDB';
 import MainLayout from '../layouts/MainLayout';
@@ -23,15 +23,15 @@ function Home() {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   const {
-    links,
+    cards,
     generateLinks,
     removeCard,
     toggleCheckCard,
     isAllCardsChecked,
     isSomeCardsChecked,
     toggleCheckAllCards,
-    fetchingLinks,
-  } = useLinksContext();
+    fetchingCards,
+  } = useCardsContext();
 
   const handleChangeCardList = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -96,7 +96,7 @@ function Home() {
               <Button disabled={!selectedCard} onClick={handleSearchNow}>
                 Search Now
               </Button>
-              <Button onClick={handleClear} disabled={!cardListText && links.length === 0}>
+              <Button onClick={handleClear} disabled={!cardListText && cards.length === 0}>
                 Clear
               </Button>
             </Box>
@@ -127,24 +127,24 @@ function Home() {
             </Button>
           </Stack>
           <Stack spacing={3} width="100%">
-            <Typography variant="h4">Links</Typography>
-            {fetchingLinks && (
+            <Typography variant="h4">Cards</Typography>
+            {fetchingCards && (
               <Box display="flex" justifyContent="center" alignItems="center" gap={2} width="100%">
-                <Typography variant="caption">Fetching links...</Typography>
+                <Typography variant="caption">Fetching cards...</Typography>
                 <CircularProgress size={20} />
               </Box>
             )}
-            {!fetchingLinks && links.length === 0 && (
+            {!fetchingCards && cards.length === 0 && (
               <Typography variant="body1" textAlign={'center'}>
-                No links to display
+                No cards to display
               </Typography>
             )}
-            {!fetchingLinks &&
-              links.length !== 0 &&
+            {!fetchingCards &&
+              cards.length !== 0 &&
               (isLgUp ? (
-                <LinksTable
+                <CardsTable
                   viewType="regular"
-                  links={links}
+                  cards={cards}
                   onRemoveCard={handleRemoveCard}
                   isAllCardsChecked={isAllCardsChecked}
                   isSomeCardsChecked={isSomeCardsChecked}
@@ -152,7 +152,7 @@ function Home() {
                   toggleCheckCard={toggleCheckCard}
                 />
               ) : (
-                <LinksList viewType="regular" links={links} onRemoveCard={handleRemoveCard} />
+                <CardsList viewType="regular" cards={cards} onRemoveCard={handleRemoveCard} />
               ))}
           </Stack>
         </Stack>

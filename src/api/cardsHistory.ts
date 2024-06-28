@@ -5,63 +5,63 @@ import useAuthContext from '../contexts/AuthContext/useAuthContext';
 import { db } from '../firebaseConfig';
 import { CardData } from '../types/card';
 
-const updateLinksHistory = async (userId: string, links: CardData[]) => {
+const updateCardsHistory = async (userId: string, cards: CardData[]) => {
   const userDocRef = doc(db, 'users', userId);
 
   const userDocSnap = await getDoc(userDocRef);
 
-  let linksHistory: CardData[] = [];
+  let cardsHistory: CardData[] = [];
 
   if (userDocSnap.exists()) {
     const userData = userDocSnap.data();
-    linksHistory = userData.linksHistory || [];
+    cardsHistory = userData.cardsHistory || [];
   }
 
-  links.forEach((newLink) => {
-    // Check if the link already exists
-    const existingLinkIndex = linksHistory.findIndex((link) => link.cardName === newLink.cardName);
+  cards.forEach((newCard) => {
+    // Check if the card already exists
+    const existingCard = cardsHistory.findIndex((card) => card.cardName === newCard.cardName);
 
-    if (existingLinkIndex !== -1) {
-      // Update the entire existing link object
-      linksHistory[existingLinkIndex] = {
-        ...newLink,
+    if (existingCard !== -1) {
+      // Update the entire existing card object
+      cardsHistory[existingCard] = {
+        ...newCard,
         timestamp: Timestamp.now(),
       };
     } else {
-      // Add new link
-      linksHistory.push({ ...newLink, timestamp: Timestamp.now() });
+      // Add new card
+      cardsHistory.push({ ...newCard, timestamp: Timestamp.now() });
     }
   });
 
   // Limit the history to 100 entries
-  if (linksHistory.length > 100) {
-    linksHistory = linksHistory.slice(-100);
+  if (cardsHistory.length > 100) {
+    cardsHistory = cardsHistory.slice(-100);
   }
 
   // Update the document with the new history array
-  await setDoc(userDocRef, { linksHistory }, { merge: true });
+  await setDoc(userDocRef, { cardsHistory }, { merge: true });
 };
 
-export const useUpdateLinksHistory = (userId?: string) => {
+export const useUpdateCardsHistory = (userId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (links: CardData[]) => {
+    (cards: CardData[]) => {
       if (!userId) {
         return Promise.reject(new Error('User is not logged in'));
       }
-      return updateLinksHistory(userId, links);
+      return updateCardsHistory(userId, cards);
     },
     {
       onSuccess: () => {
         // Invalidate and refetch
-        queryClient.invalidateQueries(['linksHistory', userId]);
+        queryClient.invalidateQueries(['cardsHistory', userId]);
       },
     },
   );
 };
 
-const getLinksHistory = async (userId?: string) => {
+const getCardsHistory = async (userId?: string) => {
   if (!userId) return [];
 
   const userDocRef = doc(db, 'users', userId);
@@ -69,18 +69,18 @@ const getLinksHistory = async (userId?: string) => {
 
   if (userDocSnap.exists()) {
     const userData = userDocSnap.data();
-    const linksHistory: CardData[] = userData.linksHistory || [];
-    linksHistory.sort(
+    const cardsHistory: CardData[] = userData.cardsHistory || [];
+    cardsHistory.sort(
       (a, b) => (b.timestamp as Timestamp).toMillis() - (a.timestamp as Timestamp).toMillis(),
     );
-    return linksHistory;
+    return cardsHistory;
   }
 
   return [];
 };
 
-export const useGetLinksHistory = () => {
+export const useGetCardsHistory = () => {
   const { user } = useAuthContext();
-  const query = useQuery(['linksHistory', user?.uid], () => getLinksHistory(user?.uid));
+  const query = useQuery(['cardsHistory', user?.uid], () => getCardsHistory(user?.uid));
   return query;
 };

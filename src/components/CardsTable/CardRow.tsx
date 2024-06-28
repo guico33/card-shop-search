@@ -6,7 +6,7 @@ import { CardData } from '../../types/card';
 import { Website } from '../../types/shops';
 
 type CommonCardRowProps = {
-  link: CardData;
+  card: CardData;
   columns: Website[];
   index: number;
 };
@@ -23,28 +23,28 @@ type HistoryCardRowProps = CommonCardRowProps & {
 
 type CardRowProps = RegularCardRowProps | HistoryCardRowProps;
 
-const CardRow = memo(({ link, columns, index, ...props }: CardRowProps) => {
+const CardRow = memo(({ card, columns, index, ...props }: CardRowProps) => {
   const handleClickCardName = () => {
-    Object.values(link.links).forEach((link) => {
+    Object.values(card.links).forEach((link) => {
       window.open(link, '_blank');
     });
   };
 
   const handleCheckCard = () => {
     if (props.viewType === 'regular') {
-      props.onToggleCheckCard(link.cardName);
+      props.onToggleCheckCard(card.cardName);
     }
   };
 
   const handleRemoveCard = () => {
     if (props.viewType === 'regular') {
-      props.onRemoveCard(link.cardName);
+      props.onRemoveCard(card.cardName);
     }
   };
 
   return (
     <TableRow
-      key={link.cardName}
+      key={card.cardName}
       sx={{
         '&:nth-of-type(odd)': {
           backgroundColor: (theme) => theme.palette.action.hover,
@@ -67,17 +67,17 @@ const CardRow = memo(({ link, columns, index, ...props }: CardRowProps) => {
           }}
           onClick={handleClickCardName}
         >
-          {index + 1}. {link.cardName}
+          {index + 1}. {card.cardName}
         </Typography>
         {props.viewType === 'regular' && (
-          <Checkbox checked={!!link.checked} value={!!link.checked} onChange={handleCheckCard} />
+          <Checkbox checked={!!card.checked} value={!!card.checked} onChange={handleCheckCard} />
         )}
       </TableCell>
       {columns.map((website) => {
         return (
           <TableCell key={website}>
             <Tooltip title={website} enterDelay={0} leaveDelay={0}>
-              <Link href={link.links[website]} target="_blank" rel="noreferrer">
+              <Link href={card.links[website]} target="_blank" rel="noreferrer">
                 Open
               </Link>
             </Tooltip>

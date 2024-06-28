@@ -24,13 +24,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-if (window.location.hostname === 'localhost') {
+if (window.location.hostname === 'localhost' && import.meta.env.MODE === 'test') {
   connectAuthEmulator(auth, 'http://localhost:9099');
   connectFirestoreEmulator(db, 'localhost', 8080);
-
-  if (import.meta.env.MODE === 'test') {
-    loginTestUser();
-  }
+  loginTestUser();
 }
 
 export { auth, db, googleProvider };
