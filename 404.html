@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=/" />
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
     <script type="text/javascript">
-      // Get the current path and query string
-      const path = window.location.pathname.replace('/card-shop-search', '');
-      const query = window.location.search;
-      
-      // Preserve the original path in the query string
-      window.location.replace(`/card-shop-search/${path}${query}`);
-    </script>
-    </script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const basePath = '/card-shop-search';
+          const currentPath = window.location.pathname;
+          const query = window.location.search;
+  
+          // Directly redirect to the base path without altering the path with a hash
+          if (!currentPath.startsWith(basePath)) {
+              window.location.href = `${basePath}${currentPath}${query}`;
+          }
+      });
+  </script>
 </head>
 <body>
+    <p>Redirecting...</p>
 </body>
 </html>
