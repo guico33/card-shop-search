@@ -5,6 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/card-shop-search/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Card Shop Search</title>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectPath = urlParams.get('p');
+        if (redirectPath) {
+          history.replaceState(null, '', redirectPath);
+        }
+      });
+    </script>
     <script type="module" crossorigin src="/card-shop-search/assets/index-32accb45.js"></script>
   </head>
   <body>

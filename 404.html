@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Redirecting...</title>
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
@@ -10,11 +10,13 @@
           const query = window.location.search;
   
           // Directly redirect to the base path without altering the path with a hash
-          if (!currentPath.startsWith(basePath)) {
-              window.location.href = `${basePath}${currentPath}${query}`;
+          if (currentPath.startsWith(basePath)) {
+              window.location.href = `${basePath}?p=${currentPath.replace(basePath, '')}${query}`;
+          } else {
+              window.location.href = `${basePath}?p=${currentPath}${query}`;
           }
       });
-  </script>
+    </script>
 </head>
 <body>
     <p>Redirecting...</p>
