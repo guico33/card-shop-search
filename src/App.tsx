@@ -1,6 +1,7 @@
 import { CssBaseline } from '@mui/material';
 import createTheme from '@mui/material/styles/createTheme';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -19,28 +20,44 @@ const theme = createTheme({
 
 const queryClient = new QueryClient();
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: AppRoutes.HOME,
+      element: <Home />,
+    },
+    {
+      path: AppRoutes.HISTORY,
+      element: <ProtectedRoute element={<History />} />,
+    },
+  ],
   {
-    path: AppRoutes.HOME,
-    element: <Home />,
+    basename: import.meta.env.BASE_URL,
   },
-  {
-    path: AppRoutes.HISTORY,
-    element: <ProtectedRoute element={<History />} />,
-  },
-]);
-
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <CardsProvider>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </CardsProvider>
-      </QueryClientProvider>
-    </AuthProvider>
-  </ThemeProvider>
 );
+
+const App = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectPath = urlParams.get('p');
+
+  useEffect(() => {
+    if (redirectPath) {
+      router.navigate(redirectPath);
+    }
+  }, [redirectPath]);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <CardsProvider>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </CardsProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+};
 
 export default App;

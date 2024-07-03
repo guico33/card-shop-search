@@ -37,6 +37,10 @@ jobs:
 
       - name: Temporarily move dist directory
         run: mv dist /tmp/dist
+
+      - name: Move 404.html to dist directory
+        run: cp 404.html /tmp/dist
+        
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"

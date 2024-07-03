@@ -8,7 +8,11 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-  const { user } = useAuthContext();
+  const { user, loading } = useAuthContext();
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return <Navigate to={AppRoutes.HOME} />;

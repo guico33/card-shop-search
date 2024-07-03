@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+          const basePath = '/card-shop-search';
+          const currentPath = window.location.pathname;
+          const query = window.location.search;
+
+          // Directly redirect to the base path with the correct path and query
+          if (currentPath.startsWith(basePath)) {
+              window.location.href = `${basePath}?p=${currentPath.replace(basePath, '')}${query}`;
+          } else {
+              window.location.href = `${basePath}?p=${currentPath}${query}`;
+          }
+      });
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>
