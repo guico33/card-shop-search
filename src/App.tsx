@@ -42,7 +42,7 @@ const App = () => {
 
   useEffect(() => {
     if (redirectPath) {
-      router.navigate(redirectPath);
+      router.navigate(redirectPath, { replace: true });
     }
   }, [redirectPath]);
 
